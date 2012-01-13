@@ -1,0 +1,41 @@
+$errorColor: #B00;
+$errorColorBg: #FDD;
+
+body {
+	font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+}
+
+#renderingContainer {
+	background: #eee;
+	width: 800px;
+	height: 500px;
+}
+
+#messages {
+	float: left;
+	width: 100%;
+}
+#messages-wrapper {
+	min-height: 4em;
+}
+
+.message {
+	font-size: 90%;
+	padding: .3em;
+	margin-bottom: 2px;
+	border: 1px solid #bbb;
+	background-color: #eee;
+	color: #888;
+	
+	&.error {
+		border-color: $errorColor;
+		background-color: $errorColorBg;
+		color: $errorColor;
+	}
+	
+	p {
+		margin: 0;
+		padding: 0;
+	}
+}

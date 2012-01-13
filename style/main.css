@@ -1,0 +1,30 @@
+body {
+  font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
+  font-size: 10pt; }
+
+#renderingContainer {
+  background: #eee;
+  width: 800px;
+  height: 500px; }
+
+#messages {
+  float: left;
+  width: 100%; }
+
+#messages-wrapper {
+  min-height: 4em; }
+
+.message {
+  font-size: 90%;
+  padding: .3em;
+  margin-bottom: 2px;
+  border: 1px solid #bbb;
+  background-color: #eee;
+  color: #888; }
+  .message.error {
+    border-color: #bb0000;
+    background-color: #ffdddd;
+    color: #bb0000; }
+  .message p {
+    margin: 0;
+    padding: 0; }

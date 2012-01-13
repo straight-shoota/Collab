@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<!-- Coffee script interpreter for inline scripts -->
+		<script src="../extra/coffee-script.js"></script>
+		
+		<!-- jQuery of course -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		
+		<!-- Collab Connection-->
+		<script src="../build/Collab.js"></script>
+		<script src="../build/EventManager.js"></script>
+		<script src="../build/Connection.js"></script>
+		<script src="../build/test/connection.js"></script>
+		<!--script type="text/coffeescript">
+			connection = new Collab.Connection
+			connection.connect('ws://localhost:3141')
+			//connection.send "hello world"
+		</script>
+		<!--script type="text/javascript">
+			connection = new Collab.Connection();
+			connection.connect('ws://localhost:3141');
+		</script-->
+		
+		<!--script type="text/javascript">
+			var socket = new WebSocket('ws://localhost:3141');
+			socket.onopen = function () {
+				console.log("opened");
+			};
+
+			socket.onmessage = function (event) {
+			  console.log(event.data);
+			};
+			
+			socket.onclose = function (event) {
+				console.log("closed");
+			};
+			
+		</script-->
+	</head>
+	<body>
+	<div id="userlist" style="float: right; width: 200px;"></div>
+	<div id="log" style="border: 1px solid #CCC; padding: .1em; min-height: 300px;"></div>
+	<input type="text" id="text" value="" />
+	<button id="send">send</button>
+	</body>
+</html>

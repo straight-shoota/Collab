@@ -1,0 +1,55 @@
+<!doctype html>
+<html class="no-js">
+	<head>
+		<meta charset="utf-8" />
+		<title>Collab</title>
+		<link href="style/main.css" rel="stylesheet" type="text/css" />
+		
+		<!-- Coffee script interpreter for inline scripts -->
+		<script src="extra/coffee-script.js"></script>
+		
+		<!-- jQuery of course -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		
+		<!-- Three.js and additional libraries for 3D -->
+		<script src="lib/Three.js"></script>
+		<script src="lib/Threex/requestAnimationFrame.js"></script>
+		
+		<!-- Collab -->
+		<script src="build/main.js"></script>
+		<script src="build/demo.js"></script>
+		<script src="build/MouseState.js"></script>
+		
+		<script type="text/coffeescript">
+			$('#no-js').hide().detach();
+			$('html').removeClass('no-js').addClass('js');
+			
+			Collab.message('Welcome to Collab!');
+			
+			collab = new Collab.CubeDemo
+			collab.init($('#renderingContainer'));
+			collab.startLoop()
+			
+			mouseState = new Collab.MouseState($('#renderingContainer'))
+			mouseState.dragend (drag) -> 
+				$('#drag').html("#{drag.startPosition.x} | #{drag.startPosition.y} => #{drag.endPosition.x} | #{drag.endPosition.y}")
+			collab.update = ->
+				$('#stat').html("#{mouseState.position.x} | #{mouseState.position.y}<br/>#{mouseState.pressed().join(', ')}")
+				
+			
+		</script>
+	</head>
+	<body>
+		<div id="messages-wrapper">
+			<div id="messages">
+				<div id="no-js" class="message error">
+					<p>Your Browser seems unable to process Javascript. This is necessary to run Collab, please active Javascript or get a supported browser.</p>
+				</div>
+			</div>
+		</div>
+		<div id="renderingContainer"></div>
+<div id="stat"></div>
+<div id="drag"></div>
+	</body>
+
+</html>

@@ -1,4 +1,4 @@
-class Collab.Connection extends Collab.EventManager
+class Collab.Connection extends EventManager
 	socket: null
 	connect: (url) ->
 		@socket = new WebSocket(url)
@@ -24,7 +24,7 @@ class Collab.Connection extends Collab.EventManager
 	connected: ->
 		@state() == 1
 	message: (fn) ->
-		@bind('message', fn )
+		@bind 'message', fn
 	
 	send: (action, message) ->
 		if not @connected() then throw new Exception "not connected"
@@ -33,6 +33,7 @@ class Collab.Connection extends Collab.EventManager
 		@socket.send JSON.stringify([action, message])
 		
 		@ #chainable	
+
 
 if (window.MozWebSocket)
 	window.WebSocket = window.MozWebSocket;

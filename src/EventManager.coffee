@@ -1,4 +1,4 @@
-class Collab.EventManager
+class window.EventManager
 	callbacks: {}
 	bind: (event, callback) ->
 		@callbacks[event] or= []

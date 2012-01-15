@@ -1,4 +1,4 @@
-class Collab.MouseState
+class Collab.MouseState extends EventManager
 	pressedState:
 		left: false
 		middle: false
@@ -6,27 +6,20 @@ class Collab.MouseState
 	position:
 		x: 0
 		y: 0
-	drag: false
+	position2D:
+		x: 0
+		y: 0
+	mouseDown: false
 	
 	constructor: (container = window.document) ->
 		@container = $(container)
 		@container.mousemove(@_onMouseMove)
-		#@container.click((event) => @_click(event))
 		@container.mousedown(@_onMouseDown)
 		@container.mouseup(@_onMouseUp)
-		@mouseDown = false
+		@bind 'mousemove', (destination, source) =>
+			@position2D.x = ((destination.x) / @container.innerWidth() ) * 2 - 1
+			@position2D.y = -(( destination.y) / @container.innerHeight() ) * 2 + 1
 		
-		@dragend (drag) -> alert "It works"
-		
-		for name in ['dragstart', 'dragend', 'dragmove']
-			this[name] = (data, fn) ->
-				if ( fn == null ) 
-					fn = data;
-					data = null;
-
-				return if arguments.length > 0 then this.on( name, null, data, fn ) else this.trigger( name )
-		
-	
 	destroy: ->
 		@container.unbind('mousedown', @_onMouseDown)
 		@container.unbind('mouseup', @_onMouseUp)
@@ -36,21 +29,12 @@ class Collab.MouseState
 		@position = 
 			x: event.offsetX
 			y: event.offsetY
+	
 	_onMouseMove: (event) =>
 		oldPosition = @position
 		@_setPosition(event)
 		
-		console.log 
-		if @pressedState.left
-			@drag = 
-				startPosition: @oldPosition
-				position: @position
-				startTime: event.timeStamp
-				button: 'left'
-			@trigger('dragstart', @drag)
-		
-		if @drag
-			@drag.position = @position
+		@trigger 'mousemove', @position, oldPosition, event
 		
 	_onMouseDown: (event) => @_onMouseChange(event, true)
 	_onMouseUp: (event) => @_onMouseChange(event, false)
@@ -64,12 +48,7 @@ class Collab.MouseState
 		@pressedState[button] = pressed
 		
 		#console.log @drag
-		if button == 'left' and !pressed and @drag
-			@drag.endPosition = @position
-			@drag.endTime = event.timeStamp
-			@trigger('dragend', @drag)
-			console.log 'dragend'
-			@drag = false
+		@trigger 'mousechange', button, pressed, event
 		
 		#console.log @pressed()
 		#console.log @pressed('left')
@@ -91,8 +70,6 @@ class Collab.MouseState
 		
 	dragend: (fn) ->
 		@bind('dragend', fn )
-	
-Collab.MouseState.prototype	 = $.extend(Collab.MouseState.prototype, $.fn);
 
 Collab.MouseState.buttons =
 	1: 'left'

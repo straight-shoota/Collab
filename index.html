@@ -15,10 +15,19 @@
 		<script src="lib/Three.js"></script>
 		<script src="lib/Threex/requestAnimationFrame.js"></script>
 		
+		<!-- external libs -->
+		<script src="build/EventManager.js"></script>
+		
 		<!-- Collab -->
-		<script src="build/main.js"></script>
-		<script src="build/demo.js"></script>
+		<script src="build/Collab.js"></script>
 		<script src="build/MouseState.js"></script>
+		<script src="build/Drag.js"></script>
+		<script src="build/Scene.js"></script>
+		
+		<script src="build/Connection.js"></script>
+		<script src="build/Log.js"></script>
+		
+		<script src="build/CubeDemo.js"></script>
 		
 		<script type="text/coffeescript">
 			$('#no-js').hide().detach();
@@ -27,29 +36,27 @@
 			Collab.message('Welcome to Collab!');
 			
 			collab = new Collab.CubeDemo
-			collab.init($('#renderingContainer'));
-			collab.startLoop()
-			
-			mouseState = new Collab.MouseState($('#renderingContainer'))
-			mouseState.dragend (drag) -> 
-				$('#drag').html("#{drag.startPosition.x} | #{drag.startPosition.y} => #{drag.endPosition.x} | #{drag.endPosition.y}")
-			collab.update = ->
-				$('#stat').html("#{mouseState.position.x} | #{mouseState.position.y}<br/>#{mouseState.pressed().join(', ')}")
-				
-			
 		</script>
 	</head>
 	<body>
-		<div id="messages-wrapper">
-			<div id="messages">
-				<div id="no-js" class="message error">
-					<p>Your Browser seems unable to process Javascript. This is necessary to run Collab, please active Javascript or get a supported browser.</p>
+		<div id="page">
+			<div id="messages-wrapper">
+				<div id="messages">
+					<div id="no-js" class="message error">
+						<p>Your Browser seems unable to process Javascript. This is necessary to run Collab, please active Javascript or get a supported browser.</p>
+					</div>
 				</div>
 			</div>
+			<div id="logArea">
+				<div id="log"></div>
+				<input type="text" id="text" value="" />
+			</div>
+			<div id="mainArea">
+				<div id="renderingContainer"></div>
+				<div id="stat"></div>
+				<div id="drag"></div>
+			</div>
 		</div>
-		<div id="renderingContainer"></div>
-<div id="stat"></div>
-<div id="drag"></div>
 	</body>
 
 </html>

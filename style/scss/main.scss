@@ -6,6 +6,10 @@ body {
 	font-size: 10pt;
 }
 
+#page {
+	width: 1200px;
+}
+
 #renderingContainer {
 	background: #eee;
 	width: 800px;
@@ -38,4 +42,21 @@ body {
 		margin: 0;
 		padding: 0;
 	}
+}
+
+#logArea {
+	float: right;
+	width: 398px;
+	height: 500px;
+	padding: 1px;
+	
+	input#text {
+		display: block;
+		width: 100%;
+	}
+}
+#log {
+	border: 1px solid #CCC;
+	padding: .1em;
+	height: 450px;
 }

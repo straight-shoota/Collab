@@ -1,11 +1,15 @@
 Collab
+==========================
+Webgestützte collaborative Zusammenarbeit in einer 3D-Umgebung
+
+Achtung: Die Lauffähigkeit des HTML5-Frontends ist momentan nur in Chromium-basierten Browsern (z.B. Google Chrome) gesichert.
 
 Projektarbeit im Modul Grafisch-Interaktive Systeme bei Prof. Dr. Paul Grimm
 Wintersemester 2011/12
 Hochschule Fulda
 
-http://www.hs-fulda.de
-
 Projektteilnehmer:
 * Johannes Müller <johannes.mueller@informatik.hs-fulda.de>
 * Mikael Wolff <mikael.wolff@informatik.hs-fulda.de>
+
+http://www.hs-fulda.de

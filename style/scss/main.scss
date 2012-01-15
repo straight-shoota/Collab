@@ -42,6 +42,18 @@ body {
 		margin: 0;
 		padding: 0;
 	}
+	
+	.time {
+		float: right;
+		font-size: 90%;
+	}
+	.sender {
+		font-size: 90%;
+		font-weight: bold;
+	}
+	.sender, .messageText {
+		display: inline;
+	}
 }
 
 #logArea {

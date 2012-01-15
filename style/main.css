@@ -31,6 +31,14 @@ body {
   .message p {
     margin: 0;
     padding: 0; }
+  .message .time {
+    float: right;
+    font-size: 90%; }
+  .message .sender {
+    font-size: 90%;
+    font-weight: bold; }
+  .message .sender, .message .messageText {
+    display: inline; }
 
 #logArea {
   float: right;

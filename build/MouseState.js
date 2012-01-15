@@ -1,8 +1,12 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  Collab.MouseState = (function() {
+  Collab.MouseState = (function(_super) {
+
+    __extends(MouseState, _super);
 
     MouseState.prototype.pressedState = {
       left: false,
@@ -15,10 +19,15 @@
       y: 0
     };
 
-    MouseState.prototype.drag = false;
+    MouseState.prototype.position2D = {
+      x: 0,
+      y: 0
+    };
+
+    MouseState.prototype.mouseDown = false;
 
     function MouseState(container) {
-      var name, _i, _len, _ref;
+      var _this = this;
       if (container == null) container = window.document;
       this._onMouseUp = __bind(this._onMouseUp, this);
       this._onMouseDown = __bind(this._onMouseDown, this);
@@ -28,25 +37,10 @@
       this.container.mousemove(this._onMouseMove);
       this.container.mousedown(this._onMouseDown);
       this.container.mouseup(this._onMouseUp);
-      this.mouseDown = false;
-      this.dragend(function(drag) {
-        return alert("It works");
+      this.bind('mousemove', function(destination, source) {
+        _this.position2D.x = (destination.x / _this.container.innerWidth()) * 2 - 1;
+        return _this.position2D.y = -(destination.y / _this.container.innerHeight()) * 2 + 1;
       });
-      _ref = ['dragstart', 'dragend', 'dragmove'];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        name = _ref[_i];
-        this[name] = function(data, fn) {
-          if (fn === null) {
-            fn = data;
-            data = null;
-          }
-          if (arguments.length > 0) {
-            return this.on(name, null, data, fn);
-          } else {
-            return this.trigger(name);
-          }
-        };
-      }
     }
 
     MouseState.prototype.destroy = function() {
@@ -66,17 +60,7 @@
       var oldPosition;
       oldPosition = this.position;
       this._setPosition(event);
-      console.log;
-      if (this.pressedState.left) {
-        this.drag = {
-          startPosition: this.oldPosition,
-          position: this.position,
-          startTime: event.timeStamp,
-          button: 'left'
-        };
-        this.trigger('dragstart', this.drag);
-      }
-      if (this.drag) return this.drag.position = this.position;
+      return this.trigger('mousemove', this.position, oldPosition, event);
     };
 
     MouseState.prototype._onMouseDown = function(event) {
@@ -93,13 +77,7 @@
       this._setPosition(event);
       button = Collab.MouseState.buttons[event.which];
       this.pressedState[button] = pressed;
-      if (button === 'left' && !pressed && this.drag) {
-        this.drag.endPosition = this.position;
-        this.drag.endTime = event.timeStamp;
-        this.trigger('dragend', this.drag);
-        console.log('dragend');
-        return this.drag = false;
-      }
+      return this.trigger('mousechange', button, pressed, event);
     };
 
     MouseState.prototype.pressed = function(button) {
@@ -135,9 +113,7 @@
 
     return MouseState;
 
-  })();
-
-  Collab.MouseState.prototype = $.extend(Collab.MouseState.prototype, $.fn);
+  })(EventManager);
 
   Collab.MouseState.buttons = {
     1: 'left',

@@ -1,6 +1,7 @@
 (function() {
+  var __slice = Array.prototype.slice;
 
-  Collab.EventManager = (function() {
+  window.EventManager = (function() {
 
     function EventManager() {}
 
@@ -23,12 +24,13 @@
       return this;
     };
 
-    EventManager.prototype.trigger = function(event, message) {
-      var callback, _i, _len, _ref;
+    EventManager.prototype.trigger = function() {
+      var args, callback, event, _i, _len, _ref;
+      event = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       _ref = this.callbacks[event] || [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         callback = _ref[_i];
-        callback(message);
+        callback.apply(null, args);
       }
       return this;
     };

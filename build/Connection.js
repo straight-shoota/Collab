@@ -62,7 +62,7 @@
 
     return Connection;
 
-  })(Collab.EventManager);
+  })(EventManager);
 
   if (window.MozWebSocket) window.WebSocket = window.MozWebSocket;
 

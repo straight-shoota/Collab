@@ -1,6 +1,7 @@
 package de.hsfulda.collabserver.controller;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.json.JSONException;
@@ -49,6 +50,7 @@ public class ChatMessage implements Serializable {
 		object.put("text", getText());
 		object.put("sender", getSender().getUID());
 		object.put("date", getDate());
+		object.put("timestamp", getDate().getTime());
 		return object;
 	}
 }

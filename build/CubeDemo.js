@@ -8,8 +8,16 @@
       this.scene = new Collab.CubeDemo.Scene;
       this.scene.init($('#renderingContainer'));
       this.scene.startLoop();
-      this.log = new Collab.Log('ws://localhost:3141');
+      this.log = new Collab.Log();
+      this.connection = new Collab.Connection();
+      this.session = new Collab.Session(this.connection);
+      this.chat = new Collab.Chat(this.session, this.log);
+      this.init();
     }
+
+    CubeDemo.prototype.init = function() {
+      return this.connection.connect('ws://localhost:3141');
+    };
 
     return CubeDemo;
 

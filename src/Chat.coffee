@@ -1,27 +1,27 @@
-class Collab.Log
-	constructor: (connection) ->
-		@connection = connection
+class Collab.Chat
+	constructor: (session, log) ->
+		@session = session
+		@log = log
 		
 		$ => @init()
 		
-		@connection.bind "send", (action, message) =>
+		@session.connection.bind "send", (action, message) =>
 			console.log "send: " + action
 			console.log message
 		
-		@connection.bind "message", (message) =>
+		@session.connection.bind "message", (message) =>
 			console.log "message: " + message.action
 			console.log message.content
 		
 		#connection.bind "server.info", ->
 			#connection.send "session.listUsers"
 			#connection.send "chat.history"
-		@connection.bind "chat.message",	(message) =>
+		@session.connection.bind "chat.message",	(message) =>
 			m = message.content
-			sender = @userlist[m.sender]
-			if(sender == undefined)
-				sender = 
-					name: 'client' + m.sender
-			@logElem.append "<div class='message'><div class='time'>#{m.date}</div><div class='sender'>#{sender.name}</div><div class='messageText'>#{m.text}</div></div>"
+			sender = @session.getUser(m.sender)
+			date = new Date(m.timestamp)
+			date = "#{date.getHours()}:#{date.getMinutes()}"
+			@log.append "<div class='message'><div class='time'>#{date}</div><div class='sender'>#{sender.name}</div><div class='messageText'>#{m.text}</div></div>"
 		
 		#@connection.bind "session.info", (message) ->
 		#	$('#userlist').html (for user in message.content.users
@@ -29,18 +29,16 @@ class Collab.Log
 		#		"<div class='user' id='user-#{user.uid}'>#{user.name}</div>"
 		#	).join ''
 			
-		@connection.bind 'close', =>
+		@session.connection.bind 'close', =>
 			@textElem.attr('disabled', 'disabled')
 	
 	sendMessage: (text) ->
 		console.log text
-		@connection.send "chat.message",
+		@session.connection.send "chat.message",
 			text: text
 	
 	init: ->
 		# this goes on jQuery.ready:
-		
-		@logElem = $('#log')
 		@inputElem = $('#text');
 		@inputElem.keyup (event) =>
 			if(event.which == Collab.Key.ENTER)

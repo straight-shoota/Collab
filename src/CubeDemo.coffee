@@ -4,9 +4,13 @@ class Collab.CubeDemo
 		@scene.init($('#renderingContainer'));
 		@scene.startLoop()
 
+		@log = new Collab.Log()
+		
 		@connection = new Collab.Connection()
 		@session = new Collab.Session(@connection)
-		@chat = new Collab.Chat()
+		@chat = new Collab.Chat(@session, @log)
+		
+		@init()
 		
 	init: ->
 		@connection.connect('ws://localhost:3141')

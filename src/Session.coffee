@@ -1,4 +1,8 @@
 class Collab.Session
 	userlist: {}
-	constructor:
-		@log = new Collab.Log('ws://localhost:3141')
+	constructor: (connection) ->
+		@connection = connection
+		
+	getUser: (id) ->
+		@userlist[id] || 
+				name: 'client' + id

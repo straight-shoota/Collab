@@ -21,8 +21,8 @@ body {
   font-size: 90%;
   padding: .3em;
   margin-bottom: 2px;
-  border: 1px solid #bbb;
-  background-color: #eee;
+  border: 1px solid #ccc;
+  background-color: #F4F4F4;
   color: #888; }
   .message.error {
     border-color: #bb0000;
@@ -33,10 +33,12 @@ body {
     padding: 0; }
   .message .time {
     float: right;
-    font-size: 90%; }
+    font-size: 80%;
+    color: #AAA; }
   .message .sender {
-    font-size: 90%;
-    font-weight: bold; }
+    font-size: 80%;
+    font-weight: bold;
+    padding-right: .5em; }
   .message .sender, .message .messageText {
     display: inline; }
 

@@ -28,8 +28,8 @@ body {
 	font-size: 90%;
 	padding: .3em;
 	margin-bottom: 2px;
-	border: 1px solid #bbb;
-	background-color: #eee;
+	border: 1px solid #ccc;
+	background-color: #F4F4F4;
 	color: #888;
 	
 	&.error {
@@ -45,11 +45,13 @@ body {
 	
 	.time {
 		float: right;
-		font-size: 90%;
+		font-size: 80%;
+		color: #AAA;
 	}
 	.sender {
-		font-size: 90%;
+		font-size: 80%;
 		font-weight: bold;
+		padding-right: .5em;
 	}
 	.sender, .messageText {
 		display: inline;

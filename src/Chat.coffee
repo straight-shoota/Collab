@@ -19,9 +19,8 @@ class Collab.Chat
 		@session.connection.bind "chat.message",	(message) =>
 			m = message.content
 			sender = @session.getUser(m.sender)
-			date = new Date(m.timestamp)
-			date = "#{date.getHours()}:#{date.getMinutes()}"
-			@log.append "<div class='message'><div class='time'>#{date}</div><div class='sender'>#{sender.name}</div><div class='messageText'>#{m.text}</div></div>"
+			@log.message sender.name, m.text, m.timestamp
+			#@log.append "<div class='message'><div class='time'>#{date}</div><div class='sender'>#{sender.name}</div><div class='messageText'>#{m.text}</div></div>"
 		
 		#@connection.bind "session.info", (message) ->
 		#	$('#userlist').html (for user in message.content.users

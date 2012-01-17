@@ -14,7 +14,7 @@ class Collab.Scene
 		
 		#setup scene
 		@scene		= new THREE.Scene
-		@scene.add(new THREE.AmbientLight(0xB0B0B0))
+		#@scene.add(new THREE.AmbientLight(0x606060))
 		
 		# setup camera
 		aspect = @settings.camera.aspect || @container.innerWidth() / @container.innerHeight()
@@ -52,57 +52,16 @@ class Collab.Scene
 		@render();
 		
 		requestAnimationFrame(=> @_loop()) if( @inLoop)
-		
-	_mouseMove: (event) ->
-		@mouse2D.x = ((event.pageX - @container.offset().left) / @container.innerWidth() ) * 2 - 1
-		@mouse2D.y = -(( event.pageY - @container.offset().top) / @container.innerHeight() ) * 2 + 1
-		#console.log("mouse position: #{round(@mouse2D.x, 2)} #{round(@mouse2D.y, 2)} --- #{event.clientX} #{event.clientY}")
-		
-		ray = @projector.pickingRay( @mouse2D.clone(), @camera );
-		intersects = ray.intersectScene( @scene )
-		
-		if(@selected)
-			for i in intersects
-				if i.object.name == "plane"
-					#console.log i
-					@selected.position.x += i.point.x - @positionOnPlane.x
-					@selected.position.z += i.point.z - @positionOnPlane.z
-					@positionOnPlane = i.point
-					#console.log 
-		else
-			hover = false
-			for i in intersects
-				if i.object.name == "cube"
-					hover = true
-			
-			@container.css('cursor', if hover then 'pointer' else 'auto')
-		
-		
-	_click: (event) ->
-	_mouseDown: (event) ->
-		ray = @projector.pickingRay( @mouse2D.clone(), @camera );
-		intersects = ray.intersectScene( @scene )
-		
-		for i in intersects
-			if i.object.name == "cube"
-				i.object.material.color.setHex(0xFF0000);
-				i.object.dynamic = true
-				#console.log i
-				@select(i.object)
-			else if i.object.name == "plane"
-				@positionOnPlane = i.point
-				
-		
-	_mouseUp: (event) ->
-		@select(false)
-		@positionOnPlane = null
-	
+
 	select: (object) ->
 		if(object)
 			@selected = object
 		else
 			@selected = false
-		@container.css('cursor', if object then 'move' else 'auto');
+		@highlight(object)
+		
+	highlight: (object) ->
+		@container.css('pointer', if object then 'move' else 'auto')
 	
 Collab.message = (message, level = "info", classes = []) ->
 	classes = classes.join(" ")

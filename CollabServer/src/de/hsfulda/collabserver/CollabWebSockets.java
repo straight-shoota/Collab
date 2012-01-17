@@ -7,7 +7,12 @@ import java.util.Map;
 import org.webbitserver.WebSocketConnection;
 import org.webbitserver.WebSocketHandler;
 
-import de.hsfulda.collabserver.controller.*;
+import de.hsfulda.collabserver.controller.AbstractController;
+import de.hsfulda.collabserver.controller.ChatController;
+import de.hsfulda.collabserver.controller.ConnectionController;
+import de.hsfulda.collabserver.controller.Controller;
+import de.hsfulda.collabserver.controller.SessionController;
+import de.hsfulda.collabserver.controller.UserController;
 
 public class CollabWebSockets implements WebSocketHandler {
 	CollabSession session = new CollabSession();
@@ -33,13 +38,12 @@ public class CollabWebSockets implements WebSocketHandler {
 	public void unregisterController(AbstractController c){
 		controllers.remove(c.getName());
 	}
-	
 
 	@Override
 	public void onMessage(WebSocketConnection connection, String messageString)
 			throws Throwable {
 		CollabClient client = (CollabClient) connection.data("client");
-		Message.Incoming message = Message.Incoming(messageString);
+		Message message = Message.parseMessage(messageString);
 		System.out.println(client.getUID() + " > " + message);
 		
 		String controller = message.getController();
@@ -63,14 +67,14 @@ public class CollabWebSockets implements WebSocketHandler {
 		CollabClient client = session.add(connection);
 		controllers.get("session").doAction(new Message("session.user.joined"), client);
 		
-		client.send(new Message.Outgoing("server.info", serverInfo));
+		client.send(new Message("server.info", serverInfo));
 	}
 	
 	@Override
 	public void onClose(WebSocketConnection connection) throws Exception {
 		CollabClient client = (CollabClient) connection.data("client");
 		System.out.println("connection closed: " + client);
-		controllers.get("session").doAction(new Message.Incoming("session.user.left", null), client);
+		controllers.get("session").doAction(new Message("session.user.left"), client);
 		session.remove(client);
 	}
 

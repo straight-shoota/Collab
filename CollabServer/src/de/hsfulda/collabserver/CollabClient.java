@@ -16,6 +16,7 @@ implements JSONAble {
 	public WebSocketConnection getConnection(){
 		return connection;
 	}
+	
 	@Override
 	public void send(Message message) {
 		getConnection().send(message.toString());

@@ -1,7 +1,6 @@
 package de.hsfulda.collabserver.action;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import de.hsfulda.collabserver.Client;

@@ -2,7 +2,8 @@ package de.hsfulda.collabserver;
 
 import java.io.IOException;
 
-import org.webbitserver.*;
+import org.webbitserver.WebServer;
+import org.webbitserver.WebServers;
 
 public class CollabServer {
 

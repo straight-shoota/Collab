@@ -1,16 +1,15 @@
 package de.hsfulda.collabserver.controller;
 
-import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import de.hsfulda.collabserver.*;
+import de.hsfulda.collabserver.Client;
+import de.hsfulda.collabserver.CollabClient;
+import de.hsfulda.collabserver.CollabSession;
+import de.hsfulda.collabserver.Message;
 
 public class SessionController extends ActionDelegateController {
 	private Map<Object, CollabSession> sessions = new HashMap<Object, CollabSession>();
@@ -38,10 +37,10 @@ public class SessionController extends ActionDelegateController {
 	}
 	
 	public void sendSessionInfo(CollabSession session) throws JSONException{
-		session.send(new Message.Outgoing("session.info", session.toJSON()));
+		session.send(new Message("session.info", session.toJSON()));
 	}
 	public void sendSessionInfo(CollabClient client) throws JSONException{
-		client.send(new Message.Outgoing("session.info", client.getSession().toJSON()));
+		client.send(new Message("session.info", client.getSession().toJSON()));
 	}
 		/*
 	public JSONObject getSessionInfo(){

@@ -1,7 +1,6 @@
 package de.hsfulda.collabserver.controller;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
 import org.json.JSONException;

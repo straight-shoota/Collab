@@ -1,8 +1,5 @@
 package de.hsfulda.collabserver.controller;
 
-import de.hsfulda.collabserver.CollabClient;
-import de.hsfulda.collabserver.Message;
-import de.hsfulda.collabserver.Message;
 
 public abstract class AbstractController implements Controller{
 	private String name;

@@ -3,8 +3,6 @@ package de.hsfulda.collabserver;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Session<C extends Client<C>> extends DefaultUniqueEntity {
@@ -20,7 +18,10 @@ public class Session<C extends Client<C>> extends DefaultUniqueEntity {
 	public Iterable<C> getClients(){
 		return clients;
 	}
-	
+
+	public void send(String action, JSONObject data){
+		send(new Message(action, data));
+	}
 	public void send(Message message){
 		for(C client : getClients()){
 			client.send(message);

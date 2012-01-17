@@ -1,6 +1,7 @@
 package de.hsfulda.collabserver;
 
-import java.util.UUID;
+import org.json.JSONObject;
+
 
 public abstract class Client<C extends Client<C>> extends DefaultUniqueEntity {
 	private String username;
@@ -26,6 +27,10 @@ public abstract class Client<C extends Client<C>> extends DefaultUniqueEntity {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public void send(String action, JSONObject data){
+		send(new Message(action, data));
 	}
 	public abstract void send(Message message);
 	

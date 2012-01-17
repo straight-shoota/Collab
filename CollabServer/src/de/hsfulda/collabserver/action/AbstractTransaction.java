@@ -5,6 +5,10 @@ import java.util.Date;
 import de.hsfulda.collabserver.Client;
 
 public abstract class AbstractTransaction implements Transaction {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Client<?> invoker;
 	private Date time;
 	private Revision source;

@@ -1,11 +1,7 @@
 package de.hsfulda.collabserver.controller;
 
-import java.io.IOException;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import de.hsfulda.collabserver.*;
+import de.hsfulda.collabserver.CollabClient;
+import de.hsfulda.collabserver.Message;
 
 public class UserController extends ActionDelegateController {
 	

@@ -1,8 +1,5 @@
 package de.hsfulda.collabserver.controller;
 
-import java.io.IOException;
-
-import de.hsfulda.collabserver.*;
 
 public class ConnectionController extends ActionDelegateController {
 

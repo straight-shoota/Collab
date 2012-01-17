@@ -1,8 +1,6 @@
 package de.hsfulda.collabserver.action;
 
-import de.hsfulda.collabserver.UniqueEntity;
-
-public interface Revision extends UniqueEntity {
+public interface Revision {
 	public Transaction getTransaction();
 	public Transaction[] getNextTransactions();
 	

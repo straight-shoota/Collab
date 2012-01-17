@@ -3,7 +3,7 @@ package de.hsfulda.collabserver;
 import org.json.JSONObject;
 
 
-public abstract class Client<C extends Client<C>> extends DefaultUniqueEntity {
+public abstract class Client<C extends Client<C>> {
 	private String username;
 	private Session<C> session = null;
 	

@@ -20,7 +20,7 @@ implements JSONAble {
 	@Override
 	public void send(Message message) {
 		getConnection().send(message.toString());
-		System.out.println(getUID() + " < " + message);
+		System.out.println(UniqueEntityProvider.UID(this) + " < " + message);
 	}
 	
 	
@@ -28,7 +28,7 @@ implements JSONAble {
 	public JSONObject toJSON() throws JSONException {
 		JSONObject object = new JSONObject();
 		object.put("name", getUsername());
-		object.put("uid", getUID());
+		object.put("uid", UniqueEntityProvider.UID(this));
 		return object;
 	}
 }

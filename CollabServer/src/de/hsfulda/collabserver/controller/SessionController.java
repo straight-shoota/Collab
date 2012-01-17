@@ -10,6 +10,7 @@ import de.hsfulda.collabserver.Client;
 import de.hsfulda.collabserver.CollabClient;
 import de.hsfulda.collabserver.CollabSession;
 import de.hsfulda.collabserver.Message;
+import de.hsfulda.collabserver.UniqueEntityProvider;
 
 public class SessionController extends ActionDelegateController {
 	private Map<Object, CollabSession> sessions = new HashMap<Object, CollabSession>();
@@ -111,7 +112,7 @@ public class SessionController extends ActionDelegateController {
 	
 	public CollabSession createSession(Client client){
 		CollabSession session = new CollabSession();
-		sessions.put(session.getUID(), session);
+		sessions.put(UniqueEntityProvider.UID(session), session);
 		
 		joinSession(client, session);
 

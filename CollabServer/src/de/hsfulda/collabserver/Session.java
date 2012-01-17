@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-public class Session<C extends Client<C>> extends DefaultUniqueEntity {
+public class Session<C extends Client<C>>{
 
 	private List<C> clients = new LinkedList<C>();
 
@@ -29,7 +29,7 @@ public class Session<C extends Client<C>> extends DefaultUniqueEntity {
 	}
 	
 	public String toString(){
-		return getUID().toString();
+		return UniqueEntityProvider.UID(this).toString();
 	}
 	
 }

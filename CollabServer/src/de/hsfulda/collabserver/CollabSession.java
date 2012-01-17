@@ -26,7 +26,7 @@ public class CollabSession extends Session<CollabClient> implements JSONAble {
 	@Override
 	public JSONObject toJSON() throws JSONException {
 		JSONObject o = new JSONObject();
-		o.put("uid", getUID());
+		o.put("uid", UniqueEntityProvider.UID(this));
 		
 		JSONArray userlist = new JSONArray();
 		for(CollabClient c : getClients()){

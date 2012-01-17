@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hsfulda.collabserver.CollabClient;
+import de.hsfulda.collabserver.UniqueEntityProvider;
 
 
 public class ChatMessage implements Serializable {
@@ -47,7 +48,7 @@ public class ChatMessage implements Serializable {
 	public JSONObject toJSON() throws JSONException {
 		JSONObject object = new JSONObject();
 		object.put("text", getText());
-		object.put("sender", getSender().getUID());
+		object.put("sender", UniqueEntityProvider.UID(getSender()));
 		object.put("date", getDate());
 		object.put("timestamp", getDate().getTime());
 		return object;

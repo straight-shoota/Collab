@@ -3,9 +3,7 @@ package de.hsfulda.collabserver.action;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.hsfulda.collabserver.DefaultUniqueEntity;
-
-public class DefaultRevision extends DefaultUniqueEntity implements Revision {
+public class DefaultRevision implements Revision {
 	private Transaction transaction;
 	private List<Transaction> nextTransactions = new LinkedList<Transaction>();
 	

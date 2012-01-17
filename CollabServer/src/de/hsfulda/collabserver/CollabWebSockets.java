@@ -44,7 +44,7 @@ public class CollabWebSockets implements WebSocketHandler {
 			throws Throwable {
 		CollabClient client = (CollabClient) connection.data("client");
 		Message message = Message.parseMessage(messageString);
-		System.out.println(client.getUID() + " > " + message);
+		System.out.println(UniqueEntityProvider.UID(client) + " > " + message);
 		
 		String controller = message.getController();
 		//System.out.println(message);

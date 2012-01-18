@@ -19,19 +19,19 @@ public class SessionController extends ActionDelegateController {
 	protected void initActions(){
 		bind("listUsers", new CollabMessageListener() {
 			@Override
-			public void action(Message message, CollabClient client) throws JSONException {
+			public void doAction(Message message, CollabClient client) throws JSONException {
 				sendSessionInfo(client);
 			}
 		});
 		bind("user.joined", new CollabMessageListener() {
 			@Override
-			public void action(Message message, CollabClient client) throws JSONException {
+			public void doAction(Message message, CollabClient client) throws JSONException {
 				sendSessionInfo(client.getSession());
 			}
 		});
 		bind("user.left", new CollabMessageListener() {
 			@Override
-			public void action(Message message, CollabClient client) throws JSONException {
+			public void doAction(Message message, CollabClient client) throws JSONException {
 				sendSessionInfo(client.getSession());
 			}
 		});

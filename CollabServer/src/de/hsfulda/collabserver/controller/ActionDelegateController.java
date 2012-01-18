@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.hsfulda.collabserver.CollabClient;
+import de.hsfulda.collabserver.CollabSession;
 import de.hsfulda.collabserver.Message;
 
 public class ActionDelegateController extends AbstractController {
@@ -46,7 +47,7 @@ public class ActionDelegateController extends AbstractController {
 		}
 		for(CollabMessageListener handler : handlers){
 			try {
-				handler.action(message, client);
+				handler.doAction(message, client);
 			}catch(Exception e){
 				throw new ControllerException(e);
 			}

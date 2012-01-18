@@ -10,7 +10,7 @@ public class UserController extends ActionDelegateController {
 		bind("update", new CollabMessageListener() {
 
 			@Override
-			public void action(Message message, CollabClient client) {
+			public void doAction(Message message, CollabClient client) {
 				// TODO Auto-generated method stub
 				
 			}

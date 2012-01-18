@@ -17,8 +17,9 @@ public class ChatController extends ActionDelegateController {
 	protected void initActions(){
 		bind("message", new CollabMessageListener() {
 			@Override
-			public void action(Message message, CollabClient client) throws JSONException {
-				String content = message.getContent().getString("text");
+			public void doAction(Message message, CollabClient client) throws Exception {
+				String content;
+				content = message.getContent().getString("text");
 				content = Jsoup.clean(content, Whitelist.simpleText());
 				ChatMessage cm = new ChatMessage(client, content);
 				chatLog.add(cm);

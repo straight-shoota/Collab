@@ -44,6 +44,7 @@
     Drag.prototype.startDrag = function(position, intersect) {
       this.drag = {
         startPosition: position,
+        objectStartPosition: intersect.object.position.clone(),
         position: this.position,
         button: 'left',
         intersect: intersect,

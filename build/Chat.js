@@ -9,21 +9,14 @@
       $(function() {
         return _this.init();
       });
-      this.session.connection.bind("send", function(action, message) {
-        console.log("send: " + action);
-        return console.log(message);
-      });
-      this.session.connection.bind("message", function(message) {
-        console.log("message: " + message.action);
-        return console.log(message.content);
-      });
       this.session.connection.bind("chat.message", function(message) {
-        var date, m, sender;
+        var m, sender;
         m = message.content;
         sender = _this.session.getUser(m.sender);
-        date = new Date(m.timestamp);
-        date = "" + (date.getHours()) + ":" + (date.getMinutes());
-        return _this.log.append("<div class='message'><div class='time'>" + date + "</div><div class='sender'>" + sender.name + "</div><div class='messageText'>" + m.text + "</div></div>");
+        return _this.log.message(sender.name, m.text, m.timestamp);
+      });
+      this.session.connection.bind('server.info', function() {
+        return _this.session.connection.send("session.listUsers");
       });
       this.session.connection.bind('close', function() {
         return _this.textElem.attr('disabled', 'disabled');

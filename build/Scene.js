@@ -4,7 +4,7 @@
 
     Scene.prototype.mouse2D = new THREE.Vector3(0, 0, 0);
 
-    Scene.prototype.inLoop = false;
+    Scene.prototype._inLoop = false;
 
     Scene.prototype.selected = false;
 
@@ -17,7 +17,6 @@
       this.renderer.setSize(this.container.innerWidth(), this.container.innerHeight());
       this.container.append(this.renderer.domElement);
       this.scene = new THREE.Scene;
-      this.scene.add(new THREE.AmbientLight(0xB0B0B0));
       aspect = this.settings.camera.aspect || this.container.innerWidth() / this.container.innerHeight();
       this.camera = new THREE.PerspectiveCamera(this.settings.camera.angle, aspect, this.settings.camera.near, this.settings.camera.far);
       this.camera.position.z = 550;
@@ -38,79 +37,23 @@
     Scene.prototype.update = function() {};
 
     Scene.prototype.startLoop = function() {
-      this.inLoop = true;
+      this._inLoop = true;
       return this._loop();
     };
 
     Scene.prototype.stopLoop = function() {
-      return this.inLoop = false;
+      return this._inLoop = false;
     };
 
     Scene.prototype._loop = function() {
       var _this = this;
       this.update();
       this.render();
-      if (this.inLoop) {
+      if (this._inLoop) {
         return requestAnimationFrame(function() {
           return _this._loop();
         });
       }
-    };
-
-    Scene.prototype._mouseMove = function(event) {
-      var hover, i, intersects, ray, _i, _j, _len, _len2, _results;
-      this.mouse2D.x = ((event.pageX - this.container.offset().left) / this.container.innerWidth()) * 2 - 1;
-      this.mouse2D.y = -((event.pageY - this.container.offset().top) / this.container.innerHeight()) * 2 + 1;
-      ray = this.projector.pickingRay(this.mouse2D.clone(), this.camera);
-      intersects = ray.intersectScene(this.scene);
-      if (this.selected) {
-        _results = [];
-        for (_i = 0, _len = intersects.length; _i < _len; _i++) {
-          i = intersects[_i];
-          if (i.object.name === "plane") {
-            this.selected.position.x += i.point.x - this.positionOnPlane.x;
-            this.selected.position.z += i.point.z - this.positionOnPlane.z;
-            _results.push(this.positionOnPlane = i.point);
-          } else {
-            _results.push(void 0);
-          }
-        }
-        return _results;
-      } else {
-        hover = false;
-        for (_j = 0, _len2 = intersects.length; _j < _len2; _j++) {
-          i = intersects[_j];
-          if (i.object.name === "cube") hover = true;
-        }
-        return this.container.css('cursor', hover ? 'pointer' : 'auto');
-      }
-    };
-
-    Scene.prototype._click = function(event) {};
-
-    Scene.prototype._mouseDown = function(event) {
-      var i, intersects, ray, _i, _len, _results;
-      ray = this.projector.pickingRay(this.mouse2D.clone(), this.camera);
-      intersects = ray.intersectScene(this.scene);
-      _results = [];
-      for (_i = 0, _len = intersects.length; _i < _len; _i++) {
-        i = intersects[_i];
-        if (i.object.name === "cube") {
-          i.object.material.color.setHex(0xFF0000);
-          i.object.dynamic = true;
-          _results.push(this.select(i.object));
-        } else if (i.object.name === "plane") {
-          _results.push(this.positionOnPlane = i.point);
-        } else {
-          _results.push(void 0);
-        }
-      }
-      return _results;
-    };
-
-    Scene.prototype._mouseUp = function(event) {
-      this.select(false);
-      return this.positionOnPlane = null;
     };
 
     Scene.prototype.select = function(object) {
@@ -119,7 +62,11 @@
       } else {
         this.selected = false;
       }
-      return this.container.css('cursor', object ? 'move' : 'auto');
+      return this.highlight(object);
+    };
+
+    Scene.prototype.highlight = function(object) {
+      return this.container.css('pointer', object ? 'move' : 'auto');
     };
 
     return Scene;

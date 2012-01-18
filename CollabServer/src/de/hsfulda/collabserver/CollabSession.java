@@ -5,7 +5,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.webbitserver.WebSocketConnection;
 
-public class CollabSession extends Session<CollabClient> implements JSONAble {
+import de.hsfulda.collabserver.scene.Scene;
+
+public class CollabSession extends Session<CollabClient> implements JSONAble, UniqueEntity {
+	Scene scene;
+	
+	public Scene getScene(){
+		if(scene == null)
+			initScene();
+		
+		return scene;
+	}
+	protected void initScene(){
+		scene = new Scene();
+	}
+	
 	public CollabClient add(WebSocketConnection connection){
 		CollabClient client = new CollabClient(connection);
 		connection.data("client", client);
@@ -23,6 +37,11 @@ public class CollabSession extends Session<CollabClient> implements JSONAble {
 		}
 	}
 
+	@Override
+	public Object getUID() {
+		return UniqueEntityProvider.UID(this);
+	}
+	
 	@Override
 	public JSONObject toJSON() throws JSONException {
 		JSONObject o = new JSONObject();

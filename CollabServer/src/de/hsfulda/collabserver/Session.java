@@ -3,11 +3,16 @@ package de.hsfulda.collabserver;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Session<C extends Client<C>>{
+import de.hsfulda.collabserver.log.Log;
+import de.hsfulda.collabserver.log.LogRecord;
+
+public class Session<C extends Client<C>> {
 
 	private List<C> clients = new LinkedList<C>();
+	private Log log = new Log();
 
 	public void add(C c){
 		clients.add(c);
@@ -22,14 +27,23 @@ public class Session<C extends Client<C>>{
 	public void send(String action, JSONObject data){
 		send(new Message(action, data));
 	}
+	public void send(String action, JSONAble data) throws JSONException{
+		send(action, data.toJSON());
+	}
 	public void send(Message message){
 		for(C client : getClients()){
 			client.send(message);
 		}
 	}
 	
+	public Log getLog(){
+		return log;
+	}
+	public void add(LogRecord record){
+		getLog().append(record);
+	}
+	
 	public String toString(){
 		return UniqueEntityProvider.UID(this).toString();
 	}
-	
 }

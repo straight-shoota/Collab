@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import de.hsfulda.collabserver.CollabClient;
-import de.hsfulda.collabserver.CollabSession;
 import de.hsfulda.collabserver.Message;
 
 public class ActionDelegateController extends AbstractController {

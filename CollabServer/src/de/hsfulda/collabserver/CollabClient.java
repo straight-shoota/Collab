@@ -16,14 +16,18 @@ implements JSONAble {
 	public WebSocketConnection getConnection(){
 		return connection;
 	}
-	
+
+	public void send(String action, JSONObject data){
+		send(new Message(action, data));
+	}
+	public void send(String action, JSONAble data) throws JSONException{
+		send(action, data.toJSON());
+	}
 	@Override
 	public void send(Message message) {
 		getConnection().send(message.toString());
 		System.out.println(UniqueEntityProvider.UID(this) + " < " + message);
 	}
-	
-	
 	
 	public JSONObject toJSON() throws JSONException {
 		JSONObject object = new JSONObject();

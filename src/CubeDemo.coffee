@@ -2,11 +2,15 @@ class Collab.CubeDemo
 	constructor: ->
 		@scene = new Collab.CubeDemo.Scene
 		@scene.init($('#renderingContainer'));
+		@scene.triggerAction = (action, data) =>
+			@connection.send 'scene.' + action, data
 		@scene.startLoop()
 
 		@log = new Collab.Log()
 		
 		@connection = new Collab.Connection()
+		@scene.initConnectionHandlers(@connection)
+		
 		@session = new Collab.Session(@connection)
 		@chat = new Collab.Chat(@session, @log)
 		
@@ -65,7 +69,7 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 		lamp.position.set(0, 300, 50)
 		lamp.castShadow = true
 		@scene.add lamp
-			
+		
 		@mouseState = new Collab.MouseState.Drag($('#renderingContainer'))
 		@mouseState.bind 'dragend', (drag) -> 
 			$('#drag').html("#{drag.startPosition.x} | #{drag.startPosition.y} => #{drag.endPosition.x} | #{drag.endPosition.y}")		
@@ -78,7 +82,7 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 		
 		@mouseState.bind "dragstart", (drag) => 
 			drag.offset = new THREE.Vector3()
-			drag.offset.sub(drag.object.position, drag.intersect.point)´
+			drag.offset.sub(drag.object.position, drag.intersect.point)
 			
 			@zeroLayer.position.y = drag.intersect.point.y
 			console.log "dragstart ", drag.intersect.point
@@ -95,6 +99,11 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 			drag.object.position.y -= 10
 			@select(false)
 			
+			@triggerAction 'drag',
+				target: drag.object.uid
+				source: drag.objectStartPosition
+				destination: drag.object.position
+			
 		@mouseState.bind "dragmove", (drag, source, destination) =>
 			#console.log destination
 			#drag.object.position.x += destination.x - source.x
@@ -109,7 +118,15 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 			drag.object.position.x = pos.x
 			drag.object.position.z = pos.z
 		
-		@addCube 2, 2
+		#@addCube 2, 2
+	
+	initConnectionHandlers: (connection) ->
+		connection.bind 'server.info', =>
+			connection.send "scene.get"
+		connection.bind 'scene.content', (message) =>
+			console.log message.content
+			for o in message.content.objects
+				@createCube(o)
 	
 	pickObjects: (flag = false) ->
 		ray = @projector.pickingRay( new THREE.Vector3(@mouseState.position2D.x,@mouseState.position2D.y,0), @camera )
@@ -123,6 +140,7 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 		cube = new THREE.Mesh( @data.geo.cube, @data.materials.cube )
 		cube.position.set(-250 + x * 50 + 25, 25, 250 - y * 50 - 25);
 		cube.name = "cube"
+		cube.uid = 1
 		cube.receiveShadow = true
 		cube.castShadow = true
 		cube.draggable = true
@@ -130,3 +148,15 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 		@objects.push cube
 		
 		Collab.message("New Cube added at #{x}, #{y}.", 'info');
+		
+	createCube: (object) ->
+		cube = new THREE.Mesh( @data.geo.cube, @data.materials.cube )
+		#cube.position.set(-250 + object.position.x * 50 + 25, object.position.z + 25, 250 - object.position.z * 50 - 25);
+		cube.position.copy object.position
+		cube.name = "cube"
+		cube.uid = object.uid
+		cube.receiveShadow = true
+		cube.castShadow = true
+		cube.draggable = true
+		@scene.add cube
+		@objects.push cube

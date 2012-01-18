@@ -29,6 +29,7 @@ class Collab.MouseState.Drag extends Collab.MouseState
 	startDrag: (position, intersect) ->
 		@drag = 
 			startPosition: position
+			objectStartPosition: intersect.object.position.clone()
 			position: @position
 			button: 'left'
 			intersect: intersect

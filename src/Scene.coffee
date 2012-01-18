@@ -1,7 +1,7 @@
 class Collab.Scene
 	
 	mouse2D: new THREE.Vector3(0,0,0)
-	inLoop: false
+	_inLoop: false
 	selected: false
 	
 	constructor: ->
@@ -40,18 +40,16 @@ class Collab.Scene
 	update: ->
 	
 	startLoop: ->
-		@inLoop = true
+		@_inLoop = true
 		@_loop();
 	
 	stopLoop: ->
-		@inLoop = false
+		@_inLoop = false
 	
 	_loop: ->
-		@update();
-		
-		@render();
-		
-		requestAnimationFrame(=> @_loop()) if( @inLoop)
+		@update()
+		@render()
+		requestAnimationFrame(=> @_loop()) if @_inLoop
 
 	select: (object) ->
 		if(object)

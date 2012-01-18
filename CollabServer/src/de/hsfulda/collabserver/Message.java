@@ -11,9 +11,14 @@ public class Message {
 	protected JSONObject content;
 
 	public Message(String action){
+		
 		String[] t = action.split("\\.", 2);
-		this.controller = t[0];
-		this.action = t[1];
+		if(t.length == 2){
+			this.controller = t[0];
+			this.action = t[1];
+		}else{
+			this.controller = action;
+		}
 	}
 	public Message(String action, JSONObject o){
 		this(action);
@@ -54,9 +59,13 @@ public class Message {
 		}
 	}
 	
+	public String getActionString(){
+		return getController() + "." + getAction();
+	}
+	
 	public String toString(){
 		JSONArray array = new JSONArray();
-		array.put(getController() + "." + getAction());
+		array.put(getActionString());
 		array.put(getContent());
 		return array.toString();
 	}

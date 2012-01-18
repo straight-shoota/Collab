@@ -11,8 +11,11 @@ import de.hsfulda.collabserver.controller.AbstractController;
 import de.hsfulda.collabserver.controller.ChatController;
 import de.hsfulda.collabserver.controller.ConnectionController;
 import de.hsfulda.collabserver.controller.Controller;
+import de.hsfulda.collabserver.controller.ControllerException;
+import de.hsfulda.collabserver.controller.SceneController;
 import de.hsfulda.collabserver.controller.SessionController;
 import de.hsfulda.collabserver.controller.UserController;
+import de.hsfulda.collabserver.uid.UniqueEntityProvider;
 
 public class CollabWebSockets implements WebSocketHandler {
 	CollabSession session = new CollabSession();
@@ -29,6 +32,7 @@ public class CollabWebSockets implements WebSocketHandler {
 		registerController(new UserController());
 		registerController(new ConnectionController());
 		registerController(new ChatController());
+		registerController(new SceneController());
 	}
 
 	public void registerController(AbstractController c){
@@ -44,14 +48,14 @@ public class CollabWebSockets implements WebSocketHandler {
 			throws Throwable {
 		CollabClient client = (CollabClient) connection.data("client");
 		Message message = Message.parseMessage(messageString);
-		System.out.println(UniqueEntityProvider.UID(client) + " > " + message);
+		System.out.println(client.getUID() + " > " + message);
 		
 		String controller = message.getController();
 		//System.out.println(message);
 		if(controllers.containsKey(controller)){
 			controllers.get(controller).doAction(message, client);
 		}else{
-			System.out.println("Unknown controller " +  controller + " for message from " + client);
+			throw new ControllerException("Unknown controller for action " +  message.getActionString());
 		}
 	}
 

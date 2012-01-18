@@ -8,8 +8,11 @@ import org.json.JSONObject;
 
 import de.hsfulda.collabserver.log.Log;
 import de.hsfulda.collabserver.log.LogRecord;
+import de.hsfulda.collabserver.uid.UniqueEntity;
+import de.hsfulda.collabserver.uid.UniqueEntityProvider;
+import de.hsfulda.collabserver.uid.UniqueObject;
 
-public class Session<C extends Client<C>> {
+public class Session<C extends Client<C>> extends UniqueObject<Integer>  {
 
 	private List<C> clients = new LinkedList<C>();
 	private Log log = new Log();
@@ -44,6 +47,6 @@ public class Session<C extends Client<C>> {
 	}
 	
 	public String toString(){
-		return UniqueEntityProvider.UID(this).toString();
+		return getUID().toString();
 	}
 }

@@ -2,8 +2,10 @@ package de.hsfulda.collabserver;
 
 import org.json.JSONObject;
 
+import de.hsfulda.collabserver.uid.UniqueObject;
 
-public abstract class Client<C extends Client<C>> {
+
+public abstract class Client<C extends Client<C>> extends UniqueObject<Integer>  {
 	private String username;
 	private Session<C> session = null;
 	

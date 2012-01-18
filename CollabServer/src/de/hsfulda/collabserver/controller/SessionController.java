@@ -9,10 +9,10 @@ import org.json.JSONException;
 import de.hsfulda.collabserver.CollabClient;
 import de.hsfulda.collabserver.CollabSession;
 import de.hsfulda.collabserver.Message;
-import de.hsfulda.collabserver.UniqueEntityProvider;
+import de.hsfulda.collabserver.uid.UniqueEntityProvider;
 
 public class SessionController extends ActionDelegateController {
-	private Map<Object, CollabSession> sessions = new HashMap<Object, CollabSession>();
+	//private Map<Object, CollabSession> sessions = new HashMap<Object, CollabSession>();
 	
 	@Override
 	protected void initActions(){
@@ -43,17 +43,16 @@ public class SessionController extends ActionDelegateController {
 		client.send("session.info", client.getSession());
 	}
 	
-	
-	public CollabSession createSession(CollabClient client){
+	/*public CollabSession createSession(CollabClient client){
 		CollabSession session = new CollabSession();
-		sessions.put(UniqueEntityProvider.UID(session), session);
+		//sessions.put(session.get, session);
 		
 		joinSession(client, session);
 
 		return session;
 	}
 	public CollabSession joinSession(CollabClient client, String sessionId){
-		CollabSession session = null;
+		/*CollabSession session = null;
 		try {
 			session = sessions.get(UUID.fromString(sessionId));
 		}catch(IllegalArgumentException exc){
@@ -74,11 +73,11 @@ public class SessionController extends ActionDelegateController {
 		client.setSession(session);
 		/*session.addClient(client);
 		session.sendMessage("session.newUser");
-		session.sendMessage(client.getClientInfo());*/
+		session.sendMessage(client.getClientInfo());
 	}
 	public void leaveSession(CollabClient client){
 		/*CollabSession session = client.getSession();
 		client.setSession(null);
-		session.sendMessage("session.left");*/
-	}
+		session.sendMessage("session.left");
+	}*/
 }

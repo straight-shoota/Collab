@@ -5,10 +5,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.webbitserver.WebSocketConnection;
 
+import de.hsfulda.collabserver.scene.Cube;
 import de.hsfulda.collabserver.scene.Scene;
+import de.hsfulda.collabserver.uid.DefaultUniqueEntityProvider;
+import de.hsfulda.collabserver.uid.IntegerUIDGenerator;
+import de.hsfulda.collabserver.uid.UIDDirectory;
+import de.hsfulda.collabserver.uid.UniqueEntity;
+import de.hsfulda.collabserver.uid.UniqueEntityProvider;
 
-public class CollabSession extends Session<CollabClient> implements JSONAble, UniqueEntity {
+public class CollabSession extends Session<CollabClient> implements JSONAble {
 	Scene scene;
+	private UIDDirectory<Integer, CollabClient> clientUidProvider = new DefaultUniqueEntityProvider<CollabClient>();  
 	
 	public Scene getScene(){
 		if(scene == null)
@@ -18,6 +25,7 @@ public class CollabSession extends Session<CollabClient> implements JSONAble, Un
 	}
 	protected void initScene(){
 		scene = new Scene();
+		scene.add(new Cube());
 	}
 	
 	public CollabClient add(WebSocketConnection connection){
@@ -36,16 +44,16 @@ public class CollabSession extends Session<CollabClient> implements JSONAble, Un
 			client.getConnection().send(s);
 		}
 	}
+	
 
-	@Override
-	public Object getUID() {
-		return UniqueEntityProvider.UID(this);
+	public UIDDirectory<Integer, CollabClient> getClientUIDProvider(){
+		return clientUidProvider;
 	}
 	
 	@Override
 	public JSONObject toJSON() throws JSONException {
 		JSONObject o = new JSONObject();
-		o.put("uid", UniqueEntityProvider.UID(this));
+		o.put("uid", getUID());
 		
 		JSONArray userlist = new JSONArray();
 		for(CollabClient c : getClients()){

@@ -8,17 +8,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hsfulda.collabserver.JSONAble;
+import de.hsfulda.collabserver.log.LogRecord;
+import de.hsfulda.collabserver.uid.DefaultUniqueEntityProvider;
+import de.hsfulda.collabserver.uid.UIDDirectory;
 
 public class Scene
 implements JSONAble {
 	Set<Object3D> objects = new HashSet<Object3D>();
+
+	private UIDDirectory<Integer, Object3D> objectUidProvider = new DefaultUniqueEntityProvider<Object3D>();
 	
-	public void addObject(Object3D o){
+	public UIDDirectory<Integer, Object3D> getObjectUIDProvider(){
+		return objectUidProvider;
+	}
+	public void registerUID(Object3D r){
+		getObjectUIDProvider().getUID(r);
+	}
+	public Object3D getObject(Integer uid){
+		return getObjectUIDProvider().getEntity(uid);
+	}
+	
+	public void add(Object3D o){
 		objects.add(o);
 	}
 	public Object3D[] getObjects(){
 		return objects.toArray(new Object3D[objects.size()]);
 	}
+	
 	@Override
 	public JSONObject toJSON() throws JSONException {
 		JSONObject o = new JSONObject();

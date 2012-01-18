@@ -4,6 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.webbitserver.WebSocketConnection;
 
+import de.hsfulda.collabserver.uid.UniqueEntity;
+import de.hsfulda.collabserver.uid.UniqueEntityProvider;
+
 public class CollabClient extends Client<CollabClient>
 implements JSONAble {
 	WebSocketConnection connection;
@@ -26,13 +29,14 @@ implements JSONAble {
 	@Override
 	public void send(Message message) {
 		getConnection().send(message.toString());
-		System.out.println(UniqueEntityProvider.UID(this) + " < " + message);
+		System.out.println(getUID() + " < " + message);
 	}
 	
 	public JSONObject toJSON() throws JSONException {
 		JSONObject object = new JSONObject();
 		object.put("name", getUsername());
-		object.put("uid", UniqueEntityProvider.UID(this));
+		object.put("uid", getUID());
 		return object;
 	}
+
 }

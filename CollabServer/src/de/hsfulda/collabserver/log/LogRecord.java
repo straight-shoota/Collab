@@ -4,8 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 import de.hsfulda.collabserver.JSONAble;
+import de.hsfulda.collabserver.uid.UniqueEntity;
+import de.hsfulda.collabserver.uid.UniqueEntityProvider;
+import de.hsfulda.collabserver.uid.UniqueObject;
 
-public abstract class LogRecord implements Serializable, JSONAble {
+public abstract class LogRecord
+extends UniqueObject<Integer>  implements Serializable, JSONAble {
 	/**
 	 * 
 	 */

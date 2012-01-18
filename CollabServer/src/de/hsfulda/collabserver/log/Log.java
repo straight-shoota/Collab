@@ -5,9 +5,21 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import de.hsfulda.collabserver.uid.DefaultUniqueEntityProvider;
+import de.hsfulda.collabserver.uid.UIDDirectory;
+
 public class Log {
 	List<LogRecord> allRecords = new LinkedList<LogRecord>();
 	Map<String, List<LogRecord>> recordsByType = new HashMap<String, List<LogRecord>>(); 
+	
+	private UIDDirectory<Integer, LogRecord> recordUidProvider = new DefaultUniqueEntityProvider<LogRecord>();
+	
+	public UIDDirectory<Integer, LogRecord> getRecordUIDProvider(){
+		return recordUidProvider;
+	}
+	public void registerUID(LogRecord r){
+		getRecordUIDProvider().getUID(r);
+	}
 	
 	public void append(LogRecord record){
 		allRecords.add(record);

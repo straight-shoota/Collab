@@ -33,7 +33,6 @@ class Collab.Scene
 		
 	initScene: ->
 	
-	
 	render: ->
 		@renderer.render(@scene, @camera)
 	

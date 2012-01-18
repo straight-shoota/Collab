@@ -12,7 +12,7 @@ class Collab.Log
 		@append @createElem 'message', "<div class='sender'>#{sender}</div><div class='messageText'>#{text}</div>", time
 		
 	createElem: (clazz, content, time) ->
-		"<div class='#{clazz}'><div class='time'>#{@getTime(time)}</div><div class='content'>#{content}</div></div>"
+		"<div class='#{clazz}'><div class='time'>#{@getTime(time)}</div><div class='content'>#{content}#{time}</div></div>"
 	
 	getTime: (timestamp) ->
 		date = new Date(timestamp)

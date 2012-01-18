@@ -5,13 +5,13 @@ class Collab.Chat
 		
 		$ => @init()
 		
-		@session.connection.bind "send", (action, message) =>
-			console.log "send: " + action
-			console.log message
+		#@session.connection.bind "send", (action, message) =>
+		#	console.log "send: " + action
+		#	console.log message
 		
-		@session.connection.bind "message", (message) =>
-			console.log "message: " + message.action
-			console.log message.content
+		#@session.connection.bind "message", (message) =>
+		#	console.log "message: " + message.action
+		#	console.log message.content
 		
 		#connection.bind "server.info", ->
 			#connection.send "session.listUsers"
@@ -27,6 +27,8 @@ class Collab.Chat
 		#		userlist[user.uid] = user
 		#		"<div class='user' id='user-#{user.uid}'>#{user.name}</div>"
 		#	).join ''
+		@session.connection.bind 'server.info', =>
+			@session.connection.send "session.listUsers"
 			
 		@session.connection.bind 'close', =>
 			@textElem.attr('disabled', 'disabled')

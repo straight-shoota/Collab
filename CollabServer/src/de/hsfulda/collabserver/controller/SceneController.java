@@ -1,0 +1,31 @@
+package de.hsfulda.collabserver.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
+import de.hsfulda.collabserver.CollabClient;
+import de.hsfulda.collabserver.Message;
+
+public class SceneController extends ActionDelegateController {
+
+	List<ChatMessage> chatLog = new ArrayList<ChatMessage>();
+	
+	@Override
+	protected void initActions(){
+		bind("message", new CollabMessageListener() {
+			@Override
+			public void doAction(Message message, CollabClient client) throws Exception {
+				String content;
+				content = message.getContent().getString("text");
+				content = Jsoup.clean(content, Whitelist.simpleText());
+				ChatMessage cm = new ChatMessage(client, content);
+				chatLog.add(cm);
+				System.out.println(cm);
+				client.getSession().send("chat.message", cm.toJSON());
+			}
+		});
+	}
+}

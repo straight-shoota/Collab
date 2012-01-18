@@ -1,23 +1,24 @@
 package de.hsfulda.collabserver.scene;
 
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3d;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hsfulda.collabserver.JSONAble;
+import de.hsfulda.collabserver.UniqueEntity;
 import de.hsfulda.collabserver.UniqueEntityProvider;
 
 
-public abstract class Object3D 
-implements JSONAble {
-	Vector3d position = new Vector3d();
+public class Object3D 
+implements JSONAble, UniqueEntity {
+	Point3d position = new Point3d();
 	
-	public Vector3d getPosition() {
+	public Point3d getPosition() {
 		return position;
 	}
 
-	public void setPosition(Vector3d position) {
+	public void setPosition(Point3d position) {
 		this.getPosition().set(position);
 	}
 	public void setPosition(double x, double y, double z) {
@@ -28,8 +29,13 @@ implements JSONAble {
 	public JSONObject toJSON() throws JSONException {
 		JSONObject o = new JSONObject();
 		o.put("position", getPosition());
-		o.put("uid", UniqueEntityProvider.UID(this));
+		o.put("uid", getUID());
 		
 		return o;
+	}
+
+	@Override
+	public Object getUID() {
+		return UniqueEntityProvider.UID(this);
 	}
 }

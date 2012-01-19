@@ -1,15 +1,10 @@
 package de.hsfulda.collabserver.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import org.json.JSONException;
 
 import de.hsfulda.collabserver.CollabClient;
 import de.hsfulda.collabserver.CollabSession;
 import de.hsfulda.collabserver.Message;
-import de.hsfulda.collabserver.uid.UniqueEntityProvider;
 
 public class SessionController extends ActionDelegateController {
 	//private Map<Object, CollabSession> sessions = new HashMap<Object, CollabSession>();

@@ -8,10 +8,7 @@ import org.webbitserver.WebSocketConnection;
 import de.hsfulda.collabserver.scene.Cube;
 import de.hsfulda.collabserver.scene.Scene;
 import de.hsfulda.collabserver.uid.DefaultUniqueEntityProvider;
-import de.hsfulda.collabserver.uid.IntegerUIDGenerator;
 import de.hsfulda.collabserver.uid.UIDDirectory;
-import de.hsfulda.collabserver.uid.UniqueEntity;
-import de.hsfulda.collabserver.uid.UniqueEntityProvider;
 
 public class CollabSession extends Session<CollabClient> implements JSONAble {
 	Scene scene;

@@ -9,7 +9,6 @@ import de.hsfulda.collabserver.CollabClient;
 import de.hsfulda.collabserver.Message;
 import de.hsfulda.collabserver.scene.Object3D;
 import de.hsfulda.collabserver.scene.Transformation;
-import de.hsfulda.collabserver.uid.UniqueEntityProvider;
 
 public class SceneController extends ActionDelegateController {
 

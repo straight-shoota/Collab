@@ -8,8 +8,6 @@ import org.json.JSONObject;
 
 import de.hsfulda.collabserver.log.Log;
 import de.hsfulda.collabserver.log.LogRecord;
-import de.hsfulda.collabserver.uid.UniqueEntity;
-import de.hsfulda.collabserver.uid.UniqueEntityProvider;
 import de.hsfulda.collabserver.uid.UniqueObject;
 
 public class Session<C extends Client<C>> extends UniqueObject<Integer>  {

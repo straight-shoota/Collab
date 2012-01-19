@@ -6,8 +6,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hsfulda.collabserver.JSONAble;
-import de.hsfulda.collabserver.uid.UniqueEntity;
-import de.hsfulda.collabserver.uid.UniqueEntityProvider;
 import de.hsfulda.collabserver.uid.UniqueObject;
 
 

@@ -4,9 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.webbitserver.WebSocketConnection;
 
-import de.hsfulda.collabserver.uid.UniqueEntity;
-import de.hsfulda.collabserver.uid.UniqueEntityProvider;
-
 public class CollabClient extends Client<CollabClient>
 implements JSONAble {
 	WebSocketConnection connection;

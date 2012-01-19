@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import de.hsfulda.collabserver.CollabClient;
 import de.hsfulda.collabserver.log.LogRecord;
-import de.hsfulda.collabserver.uid.UniqueEntityProvider;
 
 public class ChatMessage
 extends LogRecord implements Serializable{

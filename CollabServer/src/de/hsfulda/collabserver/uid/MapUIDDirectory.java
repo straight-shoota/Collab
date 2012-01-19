@@ -3,7 +3,7 @@ package de.hsfulda.collabserver.uid;
 import org.apache.commons.collections15.BidiMap;
 import org.apache.commons.collections15.bidimap.DualHashBidiMap;
 
-public class MapUIDDirectory<UID, T extends UniqueEntity> implements UIDDirectory<UID, T> {
+public class MapUIDDirectory<UID, T extends UniqueEntity<UID>> implements UIDDirectory<UID, T> {
 	private BidiMap<UID, T> directory = new DualHashBidiMap<UID, T>();
 
 	@Override

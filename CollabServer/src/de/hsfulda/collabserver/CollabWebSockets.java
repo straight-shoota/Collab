@@ -15,7 +15,6 @@ import de.hsfulda.collabserver.controller.ControllerException;
 import de.hsfulda.collabserver.controller.SceneController;
 import de.hsfulda.collabserver.controller.SessionController;
 import de.hsfulda.collabserver.controller.UserController;
-import de.hsfulda.collabserver.uid.UniqueEntityProvider;
 
 public class CollabWebSockets implements WebSocketHandler {
 	CollabSession session = new CollabSession();

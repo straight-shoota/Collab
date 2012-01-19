@@ -2,7 +2,6 @@ package de.hsfulda.collabserver.scene;
 
 import javax.vecmath.Point3d;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

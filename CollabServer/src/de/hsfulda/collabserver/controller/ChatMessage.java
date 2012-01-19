@@ -43,7 +43,6 @@ extends LogRecord implements Serializable{
 		object.put("text", getText());
 		object.put("sender", getSender().getUID());
 		object.put("userName", getSender().getUsername());
-		object.put("date", getDate());
 		return object;
 	}
 }

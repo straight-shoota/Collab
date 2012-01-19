@@ -133,7 +133,7 @@
         wireframe: !true
       }));
       this.plane.rotation.x = Math.PI / -2;
-      this.plane.position.y = -5;
+      this.plane.position.y = -30;
       this.plane.name = "plane";
       this.plane.receiveShadow = true;
       this.plane.castShadow = true;
@@ -163,14 +163,11 @@
         drag.offset.sub(drag.object.position, drag.intersect.point);
         _this.zeroLayer.position.y = drag.intersect.point.y;
         console.log("dragstart ", drag.intersect.point);
-        drag.object.material.color.setHex(0xFF0000);
-        drag.object.position.y += 10;
         drag.object.dynamic = true;
         return _this.select(drag.object);
       });
       this.mouseState.bind("dragend", function(drag) {
         _this.zeroLayer.position.y = 0;
-        drag.object.position.y -= 10;
         _this.select(false);
         return _this.triggerAction('drag', {
           target: drag.object.uid,

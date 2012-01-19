@@ -32,7 +32,6 @@ public class ChatController extends ActionDelegateController {
 				client.getSession().getLog().append(chatMessage);
 				// System.out.println(chatMessage);
 				client.getSession().send("chat.message", chatMessage);
-
 			}
 		});
 	}

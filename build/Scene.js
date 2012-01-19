@@ -57,6 +57,7 @@
     };
 
     Scene.prototype.select = function(object) {
+      if (this.selected) this.removeHighlight(this.selected);
       if (object) {
         this.selected = object;
       } else {
@@ -66,7 +67,12 @@
     };
 
     Scene.prototype.highlight = function(object) {
-      return this.container.css('pointer', object ? 'move' : 'auto');
+      this.container.css('pointer', object ? 'move' : 'auto');
+      if (object) return object.material.color.setHex(0xFF0000);
+    };
+
+    Scene.prototype.removeHighlight = function(object) {
+      return object.material.color.setHex(0x00ff80);
     };
 
     return Scene;

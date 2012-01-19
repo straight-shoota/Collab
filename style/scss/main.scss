@@ -28,14 +28,34 @@ body {
 	font-size: 90%;
 	padding: .3em;
 	margin-bottom: 2px;
-	border: 1px solid #ccc;
-	background-color: #F4F4F4;
-	color: #888;
+	color: #444;
 	
 	&.error {
 		border-color: $errorColor;
 		background-color: $errorColorBg;
 		color: $errorColor;
+	}
+	&.chatMessage {
+		/*border: 1px solid #ccc;
+		background-color: #F4F4F4;*/
+		padding: .5em;
+		color: #555;
+	}
+	&.statusChanged {
+		border-top: 1px solid #DDD;
+		margin-top: 10px;
+		color: #666;
+		
+		.content {
+			text-align: center;
+			font-size: 80%;
+			float: left;
+		}
+		.content, .time {
+			margin-top: -10px;
+			background-color: #FFF;
+			padding: 0 .5em;
+		}
 	}
 	
 	p {

@@ -5,6 +5,9 @@ public class UniqueObject<UID> implements UniqueEntity<UID> {
 	
 	@Override
 	public UID getUID() {
+		if(uid == null)
+			throw new UIDNotInitialisedException(this);
+		
 		return uid;
 	}
 

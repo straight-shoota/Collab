@@ -17,11 +17,19 @@
     };
 
     Log.prototype.message = function(sender, text, time) {
-      return this.append(this.createElem('message', "<div class='sender'>" + sender + "</div><div class='messageText'>" + text + "</div>", time));
+      return this.log('chatMessage', "<div class='sender'>" + sender + "</div><div class='messageText'>" + text + "</div>", time);
     };
 
-    Log.prototype.createElem = function(clazz, content, time) {
-      return "<div class='" + clazz + "'><div class='time'>" + (this.getTime(time)) + "</div><div class='content'>" + content + time + "</div></div>";
+    Log.prototype.userJoined = function(name, uid, time) {
+      return this.log('statusChanged userStatusChanged userJoined', "<strong class='username' data-uid='" + uid + "'>" + name + "</strong> has joined the session.", time);
+    };
+
+    Log.prototype.userLeft = function(name, uid, time) {
+      return this.log('statusChanged userStatusChanged userLeft', "<strong class='username' data-uid='" + uid + "'>" + name + "</strong> has left the session.", time);
+    };
+
+    Log.prototype.log = function(clazz, content, time) {
+      return this.append("<div class='message " + clazz + "'><div class='time'>" + (this.getTime(time)) + "</div><div class='content'>" + content + "</div></div>");
     };
 
     Log.prototype.getTime = function(timestamp) {
@@ -30,8 +38,8 @@
       h = date.getHours();
       if (h < 10) h = "0" + h;
       m = date.getMinutes();
-      if (m < 10) h = "0" + m;
-      return "" + h + ":" + m;
+      if (m < 10) m = "0" + m;
+      return h + ":" + m;
     };
 
     return Log;

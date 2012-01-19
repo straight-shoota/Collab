@@ -15,6 +15,16 @@
         sender = _this.session.getUser(m.sender);
         return _this.log.message(sender.name, m.text, m.timestamp);
       });
+      this.session.connection.bind('session.userJoined', function(message) {
+        var m;
+        m = message.content;
+        return _this.log.userJoined(m.name, m.uid, m.timestamp);
+      });
+      this.session.connection.bind('session.userLeft', function(message) {
+        var m;
+        m = message.content;
+        return _this.log.userLeft(m.name, m.uid, m.timestamp);
+      });
       this.session.connection.bind('server.info', function() {
         return _this.session.connection.send("session.listUsers");
       });

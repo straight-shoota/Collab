@@ -52,7 +52,7 @@
       this.connection.bind('server.info', function() {
         return _this.hideOverlay();
       });
-      return this.showOverlay('loading ...');
+      return this.showOverlay('connecting ...');
     };
 
     CubeDemo.prototype.hideOverlay = function() {

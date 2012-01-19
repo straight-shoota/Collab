@@ -27,7 +27,7 @@ public class Message {
 	protected Message(String action, Object bean){
 		this(action, new JSONObject(bean));
 	}
-	protected Message(String action, JSONAble jsonable) throws JSONException{
+	public Message(String action, JSONAble jsonable) throws JSONException{
 		this(action, jsonable.toJSON());
 	}
 	
@@ -64,10 +64,13 @@ public class Message {
 	}
 	
 	public String toString(){
-		JSONArray array = new JSONArray();
-		array.put(getActionString());
-		array.put(getContent());
-		return array.toString();
+		try {
+			return toJSON().toString();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 	
@@ -75,5 +78,11 @@ public class Message {
 		JSONArray array = new JSONArray(source);
 		JSONObject content = array.optJSONObject(1);
 		return new Message(array.getString(0), content);
+	}
+	public JSONArray toJSON() throws JSONException {
+		JSONArray array = new JSONArray();
+		array.put(getActionString());
+		array.put(getContent());
+		return array;
 	}
 }

@@ -6,7 +6,7 @@ import org.webbitserver.WebServer;
 import org.webbitserver.WebServers;
 
 public class CollabServer {
-
+	
 	/**
 	 * @param args
 	 */
@@ -24,5 +24,4 @@ public class CollabServer {
 			e.printStackTrace();
 		}
 	}
-
 }

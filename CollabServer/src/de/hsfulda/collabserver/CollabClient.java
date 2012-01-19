@@ -25,8 +25,13 @@ implements JSONAble {
 	}
 	@Override
 	public void send(Message message) {
-		getConnection().send(message.toString());
-		System.out.println(getUID() + " < " + message);
+		try {
+			getConnection().send(message.toJSON().toString());
+			System.out.println(getUID() + " < " + message);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public JSONObject toJSON() throws JSONException {

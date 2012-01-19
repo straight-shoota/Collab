@@ -39,11 +39,11 @@ extends LogRecord implements Serializable{
 	}
 	@Override
 	public JSONObject toJSON() throws JSONException {
-		JSONObject object = new JSONObject();
+		JSONObject object = super.toJSON();
 		object.put("text", getText());
 		object.put("sender", getSender().getUID());
+		object.put("userName", getSender().getUsername());
 		object.put("date", getDate());
-		object.put("timestamp", getDate().getTime());
 		return object;
 	}
 }

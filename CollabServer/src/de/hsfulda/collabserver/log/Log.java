@@ -22,6 +22,8 @@ public class Log {
 	}
 	
 	public void append(LogRecord record){
+		registerUID(record);
+		
 		allRecords.add(record);
 		
 		if(! recordsByType.containsKey(record.getType())) {

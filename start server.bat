@@ -1,2 +1,1 @@
-cd CollabServer
-java -cp bin;lib/webbit-0.3.0-full.jar;lib/JSON de.hsfulda.collabserver.CollabServer
+java -cp CollabServer/lib/collections-generic-4.01.jar;CollabServer/lib/json.jar;CollabServer/lib/jsoup-1.6.1.jar;CollabServer/build/vecmath-1.5.2.jar;CollabServer/lib/webbit-0.3.0-full.jar -jar CollabServer/build/CollabServer-0.1.jar

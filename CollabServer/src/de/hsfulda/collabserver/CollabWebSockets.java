@@ -84,9 +84,8 @@ public class CollabWebSockets implements WebSocketHandler {
 	@Override
 	public void onClose(WebSocketConnection connection) throws Exception {
 		CollabClient client = (CollabClient) connection.data("client");
-		System.out.println("connection closed: " + client);
-		controllers.get("session").doAction(new Message("session.user.left"), client);
-		session.remove(client);
+		//System.out.println("connection closed: " + client);
+		controllers.get("session").doAction(new Message("session.userLeft"), client);
 	}
 
 	@Override

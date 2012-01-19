@@ -30,6 +30,8 @@ public class SceneController extends ActionDelegateController {
 				Translation translation = new Translation(target, source, destination);
 				scene.registerUID(translation);
 				
+				translation.getDestination().setY(0);
+				
 				translation.apply();
 				client.getSession().send("scene.transformation", translation);
 			}

@@ -98,7 +98,7 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 		#add grid plane
 		@plane = new THREE.Mesh( new THREE.CubeGeometry( 500, 500, 10 ), new THREE.MeshBasicMaterial( { color: 0x555555, wireframe: !true } ) );
 		@plane.rotation.x = Math.PI / -2
-		@plane.position.y = -5
+		@plane.position.y = -30
 		@plane.name = "plane"
 		@plane.receiveShadow = true
 		@plane.castShadow = true
@@ -133,8 +133,8 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 			@zeroLayer.position.y = drag.intersect.point.y
 			console.log "dragstart ", drag.intersect.point
 			
-			drag.object.material.color.setHex(0xFF0000);
-			drag.object.position.y += 10
+			#console.log "hovering " + drag.object.uid
+			#drag.object.position.y += 10
 			drag.object.dynamic = true
 			
 			#console.log i.point
@@ -142,7 +142,8 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 			
 		@mouseState.bind "dragend", (drag) => 
 			@zeroLayer.position.y = 0
-			drag.object.position.y -= 10
+			#console.log "surfacing " + drag.object.uid
+			#drag.object.position.y -= 10
 			@select(false)
 			
 			@triggerAction 'drag',

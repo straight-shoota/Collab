@@ -51,14 +51,20 @@ class Collab.Scene
 		requestAnimationFrame(=> @_loop()) if @_inLoop
 
 	select: (object) ->
+		if(@selected)
+			@removeHighlight(@selected)
 		if(object)
 			@selected = object
 		else
 			@selected = false
-		@highlight(object)
 		
+		@highlight(object)
 	highlight: (object) ->
 		@container.css('pointer', if object then 'move' else 'auto')
+		object.material.color.setHex(0xFF0000) if object
+		
+	removeHighlight: (object) ->
+		object.material.color.setHex(0x00ff80);
 	
 Collab.message = (message, level = "info", classes = []) ->
 	classes = classes.join(" ")

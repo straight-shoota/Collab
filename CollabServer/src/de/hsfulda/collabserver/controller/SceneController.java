@@ -8,7 +8,8 @@ import org.json.JSONObject;
 import de.hsfulda.collabserver.CollabClient;
 import de.hsfulda.collabserver.Message;
 import de.hsfulda.collabserver.scene.Object3D;
-import de.hsfulda.collabserver.scene.Transformation;
+import de.hsfulda.collabserver.scene.Scene;
+import de.hsfulda.collabserver.scene.Translation;
 
 public class SceneController extends ActionDelegateController {
 
@@ -25,10 +26,12 @@ public class SceneController extends ActionDelegateController {
 					throw new UnsyncedException(target, target.getPosition(), source, "position");
 				}
 				
-				Transformation transformation = new Transformation(target, source, destination);
+				Scene scene = client.getSession().getScene();
+				Translation translation = new Translation(target, source, destination);
+				scene.registerUID(translation);
 				
-				transformation.apply();
-				client.getSession().send("scene.transformation", transformation);
+				translation.apply();
+				client.getSession().send("scene.transformation", translation);
 			}
 		});
 		bind("get", new CollabMessageListener() {

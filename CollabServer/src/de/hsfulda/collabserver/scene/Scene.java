@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hsfulda.collabserver.JSONAble;
+import de.hsfulda.collabserver.controller.Transformation;
 import de.hsfulda.collabserver.uid.DefaultUniqueEntityProvider;
 import de.hsfulda.collabserver.uid.UIDDirectory;
 
@@ -16,17 +17,31 @@ implements JSONAble {
 	Set<Object3D> objects = new HashSet<Object3D>();
 
 	private UIDDirectory<Integer, Object3D> objectUidProvider = new DefaultUniqueEntityProvider<Object3D>();
+	private UIDDirectory<Integer, Transformation<Object3D>> transformationUidProvider = new DefaultUniqueEntityProvider<Transformation<Object3D>>();
 	
 	public UIDDirectory<Integer, Object3D> getObjectUIDProvider(){
 		return objectUidProvider;
 	}
+	public UIDDirectory<Integer, Transformation<Object3D>> getTransformationUIDProvider(){
+		return transformationUidProvider;
+	}
+	
 	public void registerUID(Object3D r){
 		getObjectUIDProvider().getUID(r);
 	}
+	public void registerUID(Transformation<Object3D> t){
+		getTransformationUIDProvider().getUID(t);
+	}
+	
 	public Object3D getObject(Integer uid){
 		return getObjectUIDProvider().getEntity(uid);
 	}
-	
+
+	public void addCube(){
+		Cube cube = new Cube();
+		registerUID(cube);
+		objects.add(cube);
+	}
 	public void add(Object3D o){
 		objects.add(o);
 	}

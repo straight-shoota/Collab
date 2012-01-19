@@ -12,16 +12,24 @@
 
     Connection.prototype.socket = null;
 
+    Connection.prototype.connected = false;
+
+    Connection.prototype.initialized = false;
+
     Connection.prototype.connect = function(url) {
       var _this = this;
+      this.initialized = false;
       this.socket = new WebSocket(url);
       this.socket.onopen = function() {
+        _this.connected = true;
+        _this.initialized = true;
         return _this.trigger("open");
       };
       this.socket.onmessage = function(event) {
         return _this.triggerMessage(event);
       };
       return this.socket.onclose = function() {
+        _this.connected = false;
         return _this.trigger("close");
       };
     };
@@ -45,16 +53,12 @@
       return this.socket.readyState;
     };
 
-    Connection.prototype.connected = function() {
-      return this.state() === 1;
-    };
-
     Connection.prototype.message = function(fn) {
       return this.bind('message', fn);
     };
 
     Connection.prototype.send = function(action, message) {
-      if (!this.connected()) throw new Exception("not connected");
+      if (!this.connected) throw new Exception("not connected");
       this.trigger("send", action, message);
       this.socket.send(JSON.stringify([action, message]));
       return this;

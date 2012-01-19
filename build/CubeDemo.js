@@ -15,13 +15,64 @@
       this.log = new Collab.Log();
       this.connection = new Collab.Connection();
       this.scene.initConnectionHandlers(this.connection);
+      this.connection.bind('close', function() {
+        return _this.showOverlay(_this.connection.initialized ? 'lost connection :(' : 'server not responding :(');
+      });
       this.session = new Collab.Session(this.connection);
       this.chat = new Collab.Chat(this.session, this.log);
+      $(function() {
+        return _this.createOverlay();
+      });
       this.init();
     }
 
     CubeDemo.prototype.init = function() {
       return this.connection.connect('ws://localhost:3141');
+    };
+
+    CubeDemo.prototype.createOverlay = function() {
+      var $area, $overlay, $overlayMessage,
+        _this = this;
+      $overlay = $('<div id="overlay" />');
+      $overlayMessage = $('<div id="overlayMessage" />');
+      $area = $('#contentArea');
+      $('body').append($overlay).append($overlayMessage);
+      $overlay.css({
+        top: $area.offset().top,
+        left: $area.offset().left,
+        width: $area.innerWidth(),
+        height: $area.innerHeight()
+      });
+      $overlayMessage.css({
+        top: $area.offset().top,
+        left: $area.offset().left
+      });
+      this.$overlay = $overlay;
+      this.$overlayMessage = $overlayMessage;
+      this.connection.bind('server.info', function() {
+        return _this.hideOverlay();
+      });
+      return this.showOverlay('loading ...');
+    };
+
+    CubeDemo.prototype.hideOverlay = function() {
+      this.$overlay.fadeOut();
+      return this.$overlayMessage.fadeOut();
+    };
+
+    CubeDemo.prototype.showOverlay = function(message) {
+      if (message == null) message = false;
+      if (message) {
+        this.$overlayMessage.html(message);
+      } else {
+        this.$overlayMessage.html('');
+      }
+      this.$overlayMessage.css({
+        marginTop: (this.$overlay.innerHeight() - this.$overlayMessage.height()) / 2,
+        marginLeft: (this.$overlay.innerWidth() - this.$overlayMessage.width()) / 2
+      });
+      this.$overlay.fadeIn();
+      return this.$overlayMessage.fadeIn();
     };
 
     return CubeDemo;
@@ -66,6 +117,8 @@
     };
 
     Scene.prototype.objects = [];
+
+    Scene.prototype.uidObjectDirectory = {};
 
     Scene.prototype.update = function() {
       return $('#stat').html("" + this.mouseState.position2D.x + " | " + this.mouseState.position2D.y + "<br/>" + (this.mouseState.pressed().join(', ')));
@@ -131,8 +184,7 @@
         intersects = ray.intersectObject(_this.zeroLayer)[0];
         pos = new THREE.Vector3();
         pos.add(intersects.point, drag.offset);
-        drag.object.position.x = pos.x;
-        return drag.object.position.z = pos.z;
+        return drag.object.position.set(Math.round(pos.x), 0, Math.round(pos.z));
       });
     };
 
@@ -141,9 +193,9 @@
       connection.bind('server.info', function() {
         return connection.send("scene.get");
       });
-      return connection.bind('scene.content', function(message) {
+      connection.bind('scene.content', function(message) {
         var o, _i, _len, _ref, _results;
-        console.log(message.content);
+        _this.removeObjects();
         _ref = message.content.objects;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -151,6 +203,15 @@
           _results.push(_this.createCube(o));
         }
         return _results;
+      });
+      return connection.bind('scene.transformation', function(message) {
+        var object;
+        console.log("transformation: ", message.content);
+        object = _this.getObject(message.content.target);
+        if (message.content.type === 'translation') {
+          console.log("apply", message.content.destination);
+          return object.position.copy(message.content.destination);
+        }
       });
     };
 
@@ -192,7 +253,35 @@
       cube.castShadow = true;
       cube.draggable = true;
       this.scene.add(cube);
-      return this.objects.push(cube);
+      return this.addObject(cube);
+    };
+
+    Scene.prototype.getObject = function(uid) {
+      return this.uidObjectDirectory[uid];
+    };
+
+    Scene.prototype.addObject = function(object) {
+      this.uidObjectDirectory[object.uid] = object;
+      return this.objects.push(object);
+    };
+
+    Scene.prototype.removeObjects = function() {
+      var o, _i, _len, _ref;
+      _ref = this.objects;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        o = _ref[_i];
+        this.scene.remove(o);
+      }
+      this.objects = [];
+      return this.uidObjectDirectory = {};
+    };
+
+    Scene.prototype.removeObject = function(o) {
+      var i;
+      this.scene.remove(o);
+      i = this.objects.indexOf(o);
+      if (i !== -1) this.objects.splice(i, 1);
+      return this.uidObjectDirectory[o.uid] = null;
     };
 
     return Scene;

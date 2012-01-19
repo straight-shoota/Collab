@@ -1,10 +1,18 @@
 class Collab.Connection extends EventManager
 	socket: null
+	connected: false
+	initialized: false
 	connect: (url) ->
+		@initialized = false
 		@socket = new WebSocket(url)
-		@socket.onopen = => @trigger "open"
+		@socket.onopen = =>
+			@connected = true
+			@initialized = true
+			@trigger "open"
 		@socket.onmessage = (event) => @triggerMessage(event)
-		@socket.onclose = => @trigger "close"
+		@socket.onclose = =>
+			@connected = false
+			@trigger "close"
 		
 	close: ->
 		@socket.close()
@@ -21,13 +29,12 @@ class Collab.Connection extends EventManager
 		
 	state: ->
 		@socket.readyState
-	connected: ->
-		@state() == 1
+		
 	message: (fn) ->
 		@bind 'message', fn
 	
 	send: (action, message) ->
-		if not @connected() then throw new Exception "not connected"
+		if not @connected then throw new Exception "not connected"
 		
 		@trigger "send", action, message
 		@socket.send JSON.stringify([action, message])

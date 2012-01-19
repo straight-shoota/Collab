@@ -74,3 +74,15 @@ body {
 	padding: .1em;
 	height: 450px;
 }
+
+#overlay {
+	opacity: .8;
+	background-color: #DDD;
+	position: absolute;
+}
+#overlayMessage {
+	font-size: 300%;
+	color: #999;
+	position: absolute;
+	text-transform: uppercase;
+}

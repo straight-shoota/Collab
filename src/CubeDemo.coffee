@@ -11,13 +11,58 @@ class Collab.CubeDemo
 		@connection = new Collab.Connection()
 		@scene.initConnectionHandlers(@connection)
 		
+		@connection.bind 'close', =>
+			@showOverlay(if @connection.initialized then 'lost connection :(' else 'server not responding :(')
+		
 		@session = new Collab.Session(@connection)
 		@chat = new Collab.Chat(@session, @log)
+		
+		$(=> @createOverlay())
 		
 		@init()
 		
 	init: ->
 		@connection.connect('ws://localhost:3141')
+		
+	createOverlay: ->
+		$overlay = $('<div id="overlay" />')
+		$overlayMessage = $('<div id="overlayMessage" />')
+		$area = $('#contentArea')
+		$('body').append($overlay).append($overlayMessage)
+		$overlay.css(
+			top: $area.offset().top
+			left: $area.offset().left
+			width: $area.innerWidth()
+			height: $area.innerHeight()
+		)
+		$overlayMessage.css(
+			top: $area.offset().top
+			left: $area.offset().left
+		)
+		
+		@$overlay = $overlay
+		@$overlayMessage = $overlayMessage
+		
+		@connection.bind 'server.info', => @hideOverlay()
+		@showOverlay('loading ...')
+		
+	hideOverlay: ->
+		@$overlay.fadeOut()
+		@$overlayMessage.fadeOut()
+		
+	showOverlay: (message = false) ->
+	
+		if(message)
+			@$overlayMessage.html(message)
+		else
+			@$overlayMessage.html('')
+		
+		@$overlayMessage.css(
+			marginTop: (@$overlay.innerHeight() - @$overlayMessage.height()) / 2 
+			marginLeft: (@$overlay.innerWidth() - @$overlayMessage.width()) / 2 
+		)
+		@$overlay.fadeIn()
+		@$overlayMessage.fadeIn()
 
 class Collab.CubeDemo.Scene extends Collab.Scene
 	settings:
@@ -42,6 +87,7 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 			cube: new THREE.CubeGeometry( 50, 50, 50 )
 	
 	objects: []
+	uidObjectDirectory: {}
 	
 	update: ->
 		$('#stat').html("#{@mouseState.position2D.x} | #{@mouseState.position2D.y}<br/>#{@mouseState.pressed().join(', ')}")
@@ -115,8 +161,7 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 			pos = new THREE.Vector3()
 			#pos = intersects.point
 			pos.add(intersects.point, drag.offset)
-			drag.object.position.x = pos.x
-			drag.object.position.z = pos.z
+			drag.object.position.set(Math.round(pos.x), 0, Math.round(pos.z))
 		
 		#@addCube 2, 2
 	
@@ -124,9 +169,17 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 		connection.bind 'server.info', =>
 			connection.send "scene.get"
 		connection.bind 'scene.content', (message) =>
-			console.log message.content
+			@removeObjects()
+			#console.log message.content
 			for o in message.content.objects
 				@createCube(o)
+				
+		connection.bind 'scene.transformation', (message) =>
+			console.log "transformation: ", message.content
+			object = @getObject(message.content.target)
+			if(message.content.type == 'translation')
+				console.log "apply", message.content.destination
+				object.position.copy(message.content.destination)
 	
 	pickObjects: (flag = false) ->
 		ray = @projector.pickingRay( new THREE.Vector3(@mouseState.position2D.x,@mouseState.position2D.y,0), @camera )
@@ -159,4 +212,21 @@ class Collab.CubeDemo.Scene extends Collab.Scene
 		cube.castShadow = true
 		cube.draggable = true
 		@scene.add cube
-		@objects.push cube
+		@addObject(cube)
+		
+	getObject: (uid) ->
+		@uidObjectDirectory[uid]
+	addObject: (object) ->
+		@uidObjectDirectory[object.uid] = object
+		@objects.push(object)
+	removeObjects: ->
+		for o in @objects
+			@scene.remove(o)
+		@objects = []
+		@uidObjectDirectory = {}
+	removeObject: (o) ->
+		@scene.remove(o)
+		i = @objects.indexOf(o)
+		@objects.splice(i, 1) if i != -1
+		@uidObjectDirectory[o.uid] = null
+	

@@ -1,0 +1,92 @@
+<html>
+	<head>
+		<title>Collab Commands</title>
+		<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
+	</head>
+	<body>
+		<div class="container">
+		<header>
+			<h1>Collab Commands</h1>
+		</header>
+		<h2>General</h2>
+		<p>Each command response sent from the server contains the following fields:</p>
+<pre class="span6">
+uid:		<code title="data type: int">[LogRecord.UID]</code>,
+timestamp:	1326993615826,
+type:		"logrecord"
+</pre>
+		<section>
+			<div class="page-header">
+				<h1>Chat Controller</h1>
+			</div>
+			<section>
+				<h2>Request <small>chat.message<small></h2>
+				<p>Sends a chat message to the server</p>
+<pre class="span6">
+text: "the message"
+</pre>
+				<h3>Parameters</h3>
+				<dl>
+					<dt>text</dt>
+					<dd>
+					<ul>
+						<li>HTML is supported, <a href="http://jsoup.org/cookbook/cleaning-html/whitelist-sanitizer">sanitized</a>. The only tags allowed are: <code>&lt;b&gt;</code>, <code>&lt;em&gt;</code>, <code>&lt;i&gt;</code>, <code>&lt;strong&gt;</code> and <code>&lt;u&gt;</code> (<a href="http://jsoup.org/apidocs/org/jsoup/safety/Whitelist.html#simpleText()">Whitelist.simpleText() from jsoup</a>).</li>
+						<li>URLs in the text are converted to links. They must begin with the URL scheme (<code>http://</code>, <code>https://</code>, <code>ftp://</code>, <code>mailto:</code>) or <code>www.</code>.</li>
+					</ul>
+					</dd>
+				</dl>
+				<h2>Response <span class="label">broadcast</span> <small>chat.message<small></h2>
+				<p>This response is sent to every client in the current session</p>
+<pre class="span6">
+text: 		"the message",
+sender:		<code title="data type: int">[Client.UID]</code>,
+userName:	<code title="data type: string">[Client.Username]</code>
+</pre>
+			</section>
+		</section>
+		<section>
+			<div class="page-header">
+				<h1>Scene Controller</h1>
+			</div>
+			<section>
+				<h2>Request <small>scene.drag<small></h2>
+				<p>Notifies the server about a drag user action on the client. The server then decides if this action is legit and if so sends updates to all clients.</p>
+<pre class="span6">
+target:		<code title="data type: int">[Object3D.UID]</code>,
+source:		{x: 0.0, y: 0.0, z: 0.0},
+destination:	{x: 0.0, y: 0.0, z: 0.0},
+</pre>
+				<h3>Parameters</h3>
+				<dl>
+					<dt>source</dt>
+					<dd>
+						<p>If the source position differs from the current position of the specified target in the servers data structure, this request is considered a collision.</p>
+					</dd>
+				</dl>
+				<h2>Response <span class="label">broadcast</span> <small>scene.transformation<small></h2>
+				<p>This response is sent to every client in the current session.</p>
+<pre class="span6">
+target:		<code title="data type: int">[Object3D.UID]</code>,
+source:		{x: 0.0, y: 0.0, z: 0.0},
+destination:	{x: 0.0, y: 0.0, z: 0.0},
+</pre>
+			</section>
+			<section>
+				<h2>Request <small>scene.get<small></h2>
+				<p>Requests the delivery of all scene data to the client.</p>
+				<h2>Response <small>scene.content<small></h2>
+<pre class="span9">
+objects:	[
+			{	// Object3D
+				uid: 		<code title="data type: int">[Object3D.UID]</code>,
+				position:	{x: 0.0, y: 0.0, z: 0.0}
+			},
+			[...]
+		]
+</pre>
+				<h3>Parameters</h3>
+			</section>
+		</section>
+		</div>
+	</body>
+</html>

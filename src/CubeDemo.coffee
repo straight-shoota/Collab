@@ -44,7 +44,7 @@ class Collab.CubeDemo
 		@$overlayMessage = $overlayMessage
 		
 		@connection.bind 'server.info', => @hideOverlay()
-		@showOverlay('loading ...')
+		@showOverlay('connecting ...')
 		
 	hideOverlay: ->
 		@$overlay.fadeOut()

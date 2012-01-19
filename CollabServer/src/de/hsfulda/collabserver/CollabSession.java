@@ -5,30 +5,37 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.webbitserver.WebSocketConnection;
 
-import de.hsfulda.collabserver.scene.Cube;
 import de.hsfulda.collabserver.scene.Scene;
 import de.hsfulda.collabserver.uid.DefaultUniqueEntityProvider;
 import de.hsfulda.collabserver.uid.UIDDirectory;
 
 public class CollabSession extends Session<CollabClient> implements JSONAble {
 	Scene scene;
+	CollabWebSockets server;
 	private UIDDirectory<Integer, CollabClient> clientUidProvider = new DefaultUniqueEntityProvider<CollabClient>();  
 	
+	public CollabSession(CollabWebSockets server){		
+		this.server = server;
+		initScene();
+	}
+	
+	public CollabWebSockets getServer(){
+		return server;
+	}
+	
 	public Scene getScene(){
-		if(scene == null)
-			initScene();
-		
 		return scene;
 	}
 	protected void initScene(){
 		scene = new Scene();
-		scene.add(new Cube());
+		scene.addCube();
 	}
 	
 	public CollabClient add(WebSocketConnection connection){
 		CollabClient client = new CollabClient(connection);
 		connection.data("client", client);
 		client.setSession(this);
+		getClientUIDProvider().getUID(client);
 		add(client);
 		return client;
 	}
@@ -42,7 +49,6 @@ public class CollabSession extends Session<CollabClient> implements JSONAble {
 		}
 	}
 	
-
 	public UIDDirectory<Integer, CollabClient> getClientUIDProvider(){
 		return clientUidProvider;
 	}

@@ -4,34 +4,44 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.webbitserver.WebSocketConnection;
 import org.webbitserver.WebSocketHandler;
 
 import de.hsfulda.collabserver.controller.AbstractController;
 import de.hsfulda.collabserver.controller.ChatController;
-import de.hsfulda.collabserver.controller.ConnectionController;
 import de.hsfulda.collabserver.controller.Controller;
 import de.hsfulda.collabserver.controller.ControllerException;
 import de.hsfulda.collabserver.controller.SceneController;
 import de.hsfulda.collabserver.controller.SessionController;
 import de.hsfulda.collabserver.controller.UserController;
+import de.hsfulda.collabserver.uid.DefaultUniqueEntityProvider;
+import de.hsfulda.collabserver.uid.UIDDirectory;
 
 public class CollabWebSockets implements WebSocketHandler {
-	CollabSession session = new CollabSession();
+	CollabSession session;
 	ServerInfo serverInfo;
-	
+
 	private Map<String, Controller> controllers = new HashMap<String, Controller>();
+	private UIDDirectory<Integer, CollabSession> sessionUidProvider = new DefaultUniqueEntityProvider<CollabSession>();
 	
 	public CollabWebSockets(){
 		serverInfo = new ServerInfo();
 		serverInfo.setName("Collab Server");
 		serverInfo.setVersion("0.1");
 		
+		session = new CollabSession(this);
+		sessionUidProvider.getUID(session);
+		
 		registerController(new SessionController());
 		registerController(new UserController());
-		registerController(new ConnectionController());
 		registerController(new ChatController());
 		registerController(new SceneController());
+	}
+
+	public ServerInfo getServerInfo() {
+		return serverInfo;
 	}
 
 	public void registerController(AbstractController c){
@@ -68,9 +78,7 @@ public class CollabWebSockets implements WebSocketHandler {
 	@Override
 	public void onOpen(WebSocketConnection connection) throws Exception {
 		CollabClient client = session.add(connection);
-		controllers.get("session").doAction(new Message("session.user.joined"), client);
-		
-		client.send(new Message("server.info", serverInfo));
+		controllers.get("session").doAction(new Message("session.userJoined"), client);
 	}
 	
 	@Override
@@ -86,7 +94,8 @@ public class CollabWebSockets implements WebSocketHandler {
 		// TODO Auto-generated method stub
 
 	}
-	public static class ServerInfo implements Serializable {
+	
+	public static class ServerInfo implements Serializable, JSONAble {
 		/**
 		 * 
 		 */
@@ -104,6 +113,10 @@ public class CollabWebSockets implements WebSocketHandler {
 		}
 		public void setVersion(String version) {
 			this.version = version;
+		}
+		@Override
+		public JSONObject toJSON() throws JSONException {
+			return new JSONObject(this);
 		}
 	}
 }

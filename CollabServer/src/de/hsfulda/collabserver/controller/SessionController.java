@@ -17,10 +17,12 @@ public class SessionController extends ActionDelegateController {
 				sendSessionInfo(client);
 			}
 		});
-		bind("user.joined", new CollabMessageListener() {
+		bind("userJoined", new CollabMessageListener() {
 			@Override
 			public void doAction(Message message, CollabClient client) throws JSONException {
 				sendSessionInfo(client.getSession());
+				
+				client.send("server.info", client.getSession().getServer().getServerInfo());
 			}
 		});
 		bind("user.left", new CollabMessageListener() {

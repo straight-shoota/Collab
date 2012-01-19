@@ -27,6 +27,13 @@ class Collab.Chat
 		#		userlist[user.uid] = user
 		#		"<div class='user' id='user-#{user.uid}'>#{user.name}</div>"
 		#	).join ''
+		@session.connection.bind 'session.userJoined', (message) =>
+			m = message.content
+			@log.userJoined m.name, m.uid, m.timestamp
+		@session.connection.bind 'session.userLeft', (message) =>
+			m = message.content
+			@log.userLeft m.name, m.uid, m.timestamp		
+			
 		@session.connection.bind 'server.info', =>
 			@session.connection.send "session.listUsers"
 			

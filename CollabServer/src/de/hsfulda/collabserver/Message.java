@@ -1,6 +1,8 @@
 package de.hsfulda.collabserver;
 
 
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +13,6 @@ public class Message {
 	protected JSONObject content;
 
 	public Message(String action){
-		
 		String[] t = action.split("\\.", 2);
 		if(t.length == 2){
 			this.controller = t[0];
@@ -23,6 +24,14 @@ public class Message {
 	public Message(String action, JSONObject o){
 		this(action);
 		this.content = o;
+		if(content != null && !content.has("timestamp")){
+			try {
+				content.put("timestamp", new Date().getTime());
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	protected Message(String action, Object bean){
 		this(action, new JSONObject(bean));

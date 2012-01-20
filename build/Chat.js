@@ -15,15 +15,21 @@
         sender = _this.session.getUser(m.sender);
         return _this.log.message(sender.name, m.text, m.timestamp);
       });
+      this.session.connection.bind("session.info", function(message) {
+        _this.session.setUserlist(message.content.users);
+        return _this.log.userlist(_this.session.getUserlist(), message.content.timestamp);
+      });
       this.session.connection.bind('session.userJoined', function(message) {
         var m;
         m = message.content;
-        return _this.log.userJoined(m.name, m.uid, m.timestamp);
+        _this.session.addUser(m);
+        return _this.log.userJoined(m, m.timestamp);
       });
       this.session.connection.bind('session.userLeft', function(message) {
         var m;
         m = message.content;
-        return _this.log.userLeft(m.name, m.uid, m.timestamp);
+        _this.session.removeUser(m);
+        return _this.log.userLeft(m, m.timestamp);
       });
       this.session.connection.bind('server.info', function() {
         return _this.session.connection.send("session.listUsers");

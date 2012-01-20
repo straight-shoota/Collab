@@ -56,6 +56,8 @@ body {
     padding-right: .5em; }
   .message .sender, .message .messageText {
     display: inline; }
+  .message .username {
+    font-weight: bold; }
 
 #logArea {
   float: right;

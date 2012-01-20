@@ -22,17 +22,17 @@ class Collab.Chat
 			@log.message sender.name, m.text, m.timestamp
 			#@log.append "<div class='message'><div class='time'>#{date}</div><div class='sender'>#{sender.name}</div><div class='messageText'>#{m.text}</div></div>"
 		
-		#@connection.bind "session.info", (message) ->
-		#	$('#userlist').html (for user in message.content.users
-		#		userlist[user.uid] = user
-		#		"<div class='user' id='user-#{user.uid}'>#{user.name}</div>"
-		#	).join ''
+		@session.connection.bind "session.info", (message) =>
+			@session.setUserlist(message.content.users)
+			@log.userlist @session.getUserlist(), message.content.timestamp
 		@session.connection.bind 'session.userJoined', (message) =>
 			m = message.content
-			@log.userJoined m.name, m.uid, m.timestamp
+			@session.addUser(m)
+			@log.userJoined m, m.timestamp
 		@session.connection.bind 'session.userLeft', (message) =>
 			m = message.content
-			@log.userLeft m.name, m.uid, m.timestamp		
+			@session.removeUser(m)
+			@log.userLeft m, m.timestamp		
 			
 		@session.connection.bind 'server.info', =>
 			@session.connection.send "session.listUsers"
